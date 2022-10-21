@@ -22,6 +22,8 @@ public class Product extends BaseTimeEntity {
 //    @JoinColumn(name = "USER_ID")
 //    private User user;
 
+//    private String image;
+
     private String title;
     private Integer lowprice;
     private String content;
@@ -35,7 +37,11 @@ public class Product extends BaseTimeEntity {
         content = productRequestPostDto.getContent();
     }
 
-//    private String image;
+    public void successBid() {
+        isSold = true;
+    }
+
+
 
 
 }

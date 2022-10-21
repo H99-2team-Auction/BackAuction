@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment>  findCommentsByProduct(Product product);
+    List<Comment> findCommentsByProduct(Product product);
 
 
 }

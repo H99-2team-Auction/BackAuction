@@ -1,6 +1,7 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
+import com.mini.auction.service.BidService;
 import com.mini.auction.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -50,19 +51,34 @@ public class ProductController {
     /**
      * 상품 상세 조회
      */
-    @GetMapping("/productId")
+    @GetMapping("/{productId}")
     public void getProduct(@PathVariable Long productId) {
         productService.findOneProduct(productId);
 
     }
 
+    /**
+     * 상품 삭제
+     */
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<ResponseDto<String>> delProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(productService.deleteProduct(productId), setHeaders(), HttpStatus.OK);
+    }
 
-
+    /**
+     * 상품 낙찰
+     */
+    @PostMapping("/{productId}/sold")
+    public void successBid(@PathVariable Long productId) {
+        productService.auctionedOff(productId);
+    }
 
     private HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         return headers;
+
     }
+
 
 }

@@ -26,9 +26,8 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private Product Product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
 }
