@@ -1,14 +1,13 @@
 package com.mini.auction.entity;
 
-import com.mini.auction.dto.BaseTimeEntity;
-import com.mini.auction.dto.ProductRequestDto;
+import com.mini.auction.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-import static com.mini.auction.dto.ProductRequestDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.*;
 
 @Entity
 @Getter
@@ -21,6 +20,8 @@ public class Product extends BaseTimeEntity {
 //    @ManyToOne
 //    @JoinColumn(name = "USER_ID")
 //    private User user;
+
+//    private String image;
 
     private String title;
     private Integer lowprice;
@@ -35,7 +36,11 @@ public class Product extends BaseTimeEntity {
         content = productRequestPostDto.getContent();
     }
 
-//    private String image;
+    public void successBid() {
+        isSold = true;
+    }
+
+
 
 
 }

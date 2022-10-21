@@ -1,4 +1,4 @@
-package com.mini.auction.dto;
+package com.mini.auction.entity.base;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

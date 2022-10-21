@@ -14,8 +14,8 @@ import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static com.mini.auction.dto.ProductRequestDto.*;
-import static com.mini.auction.dto.ProductResponseDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.*;
+import static com.mini.auction.dto.response.ProductResponseDto.*;
 
 
 /**
@@ -50,19 +50,34 @@ public class ProductController {
     /**
      * 상품 상세 조회
      */
-    @GetMapping("/productId")
+    @GetMapping("/{productId}")
     public void getProduct(@PathVariable Long productId) {
         productService.findOneProduct(productId);
 
     }
 
+    /**
+     * 상품 삭제
+     */
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<ResponseDto<String>> delProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(productService.deleteProduct(productId), setHeaders(), HttpStatus.OK);
+    }
 
-
+    /**
+     * 상품 낙찰
+     */
+    @PostMapping("/{productId}/sold")
+    public void successBid(@PathVariable Long productId) {
+        productService.auctionedOff(productId);
+    }
 
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         return headers;
+
     }
+
 
 }

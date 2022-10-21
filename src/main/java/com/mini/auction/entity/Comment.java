@@ -1,6 +1,6 @@
 package com.mini.auction.entity;
 
-import com.mini.auction.dto.BaseTimeEntity;
+import com.mini.auction.entity.base.BaseTimeEntity;
 import com.mini.auction.dto.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,10 +27,9 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private Product Product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
     public void update(CommentRequestDto requestDto) {
         this.comment = requestDto.getComment();
