@@ -22,6 +22,7 @@ public class WebSecurityConfig {
 //                .exceptionHandling()
 //                .authenticationEntryPoint(authenticationEntryPointException);
 
+        // 세션방식을 사용하지 않는다.
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
