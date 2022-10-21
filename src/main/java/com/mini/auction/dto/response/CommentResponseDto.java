@@ -1,5 +1,6 @@
-package com.mini.auction.entity;
+package com.mini.auction.dto.response;
 
+import com.mini.auction.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class CommentResponse {
+public class CommentResponseDto {
 
     private String comment;
 
@@ -17,7 +18,7 @@ public class CommentResponse {
 
     private LocalDateTime modifiedAt;
 
-    public CommentResponse(Comment comment) {
+    public CommentResponseDto(Comment comment) {
         this.comment = comment.getComment();
 //        this.username = comment.getUser().getUsername();
         this.createdAt = comment.getCreatedAt();

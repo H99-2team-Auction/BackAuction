@@ -1,6 +1,7 @@
 package com.mini.auction.entity;
 
 import com.mini.auction.dto.BaseTimeEntity;
+import com.mini.auction.dto.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,4 +31,7 @@ public class Comment extends BaseTimeEntity {
 //    @JoinColumn(name = "user_id", nullable = false)
 //    private User user;
 
+    public void update(CommentRequestDto requestDto) {
+        this.comment = requestDto.getComment();
+    }
 }

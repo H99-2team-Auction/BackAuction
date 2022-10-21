@@ -1,4 +1,4 @@
-package com.mini.auction.entity;
+package com.mini.auction.service;
 
 public class UserDetailsImpl {
     public Object getUser() {

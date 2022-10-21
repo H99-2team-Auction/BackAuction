@@ -1,4 +1,4 @@
-package com.mini.auction.entity;
+package com.mini.auction.exception;
 
 public class NotFoundProductException extends Throwable {
 }
