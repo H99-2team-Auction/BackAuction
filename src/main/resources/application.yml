@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/auctiondb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type: trace
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+jwt:
+  secret:
+    key:
+
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
