@@ -1,14 +1,13 @@
 package com.mini.auction.entity;
 
-import com.mini.auction.dto.BaseTimeEntity;
-import com.mini.auction.dto.ProductRequestDto;
+import com.mini.auction.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-import static com.mini.auction.dto.ProductRequestDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.*;
 
 @Entity
 @Getter

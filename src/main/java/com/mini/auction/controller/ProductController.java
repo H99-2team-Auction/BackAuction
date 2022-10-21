@@ -1,7 +1,6 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.service.BidService;
 import com.mini.auction.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -15,8 +14,8 @@ import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static com.mini.auction.dto.ProductRequestDto.*;
-import static com.mini.auction.dto.ProductResponseDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.*;
+import static com.mini.auction.dto.response.ProductResponseDto.*;
 
 
 /**

@@ -2,8 +2,8 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.entity.Comment;
-import com.mini.auction.entity.CommentRepository;
 import com.mini.auction.entity.Product;
+import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mini.auction.dto.ProductRequestDto.*;
-import static com.mini.auction.dto.ProductResponseDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.*;
+import static com.mini.auction.dto.response.ProductResponseDto.*;
 
 
 @RequiredArgsConstructor

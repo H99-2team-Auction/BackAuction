@@ -1,4 +1,4 @@
-package com.mini.auction.dto;
+package com.mini.auction.dto.response;
 
 import com.mini.auction.entity.Product;
 import lombok.AllArgsConstructor;

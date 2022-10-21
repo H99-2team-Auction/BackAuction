@@ -1,6 +1,6 @@
 package com.mini.auction.entity;
 
-import com.mini.auction.dto.BaseTimeEntity;
+import com.mini.auction.entity.base.BaseTimeEntity;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

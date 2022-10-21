@@ -22,9 +22,9 @@ public class BidService {
         Product findProduct = isExistedProduct(productId);
 
         // BidRepository에 Member가 있는지 확인
-        if(bidRepository.findByUsername(username).isPresent()) {
-
-        }
+//        if(bidRepository.findByUsername(username).isPresent()) {
+//
+//        }
 
         // 있다면 Bid 삭제
         // 없다면 Bid 추가
