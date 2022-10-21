@@ -59,7 +59,7 @@ public class ProductController {
 
 
 
-    private HttpHeaders setHeaders() {
+    public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         return headers;
