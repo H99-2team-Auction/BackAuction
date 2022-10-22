@@ -3,6 +3,7 @@ package com.mini.auction.service;
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.entity.Comment;
+import com.mini.auction.entity.Member;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
 import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
 import com.mini.auction.entity.Product;
@@ -25,13 +26,13 @@ public class CommentService {
     @Transactional
     public CommentResponseDto createComment(Long productId,
                                             CommentRequestDto requestDto,
-                                            Object user) throws NotFoundProductException {
+                                            Member member) {
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
 
         Comment comment = Comment.builder()
                 .comment(requestDto.getComment())
-                .user(user)
+                .member(member)
                 .Product(product)
                 .build();
 
@@ -39,7 +40,7 @@ public class CommentService {
 
         return CommentResponseDto.builder()
                 .comment(comment.getComment())
-                .username(user.getUsername())
+                .username(member.getUsername())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .build();
@@ -47,7 +48,7 @@ public class CommentService {
 
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDto> getCommentsList(Long productId) throws NotFoundProductException {
+    public List<CommentResponseDto> getCommentsList(Long productId) {
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
         // product 객체에 해당하는 댓글 리스트 불러오기
@@ -64,15 +65,15 @@ public class CommentService {
 
     @Transactional
     public CommentResponseDto updateComment(Long productId, Long commentId,
-                                            User user,
-                                            CommentRequestDto requestDto) throws NotFoundProductException, NotFoundCommentException {
+                                            Member member,
+                                            CommentRequestDto requestDto) {
 
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
         // 해당 댓글 없으면 예외 터트림
         Comment comment = commentRepository.findById(commentId).orElseThrow(NotFoundCommentException::new);
         // 댓글 작성한 유저 맞는지 확인
-        user.checkUser(comment);
+        member.isAuthor(comment);
         // 댓글 객체 수정
         comment.update(requestDto);
 
@@ -81,16 +82,13 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto deleteComment(Long productId, Long commentId, User user)
-            throws NotFoundCommentException, NotFoundProductException {
+    public CommentResponseDto deleteComment(Long productId, Long commentId, Member member) {
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
         // 해당 댓글 없으면 예외 터트림
         Comment comment = commentRepository.findById(commentId).orElseThrow(NotFoundCommentException::new);
-        // 댓글을 작성한 멤버인지 확인. userDetails 에서 불러온 유저객체와
-        // comment repo 에서 불러온 comment 객체의 유저 객체 비교해서
-        // 예외 터트리기
-        user.checkUser(comment);
+
+        member.isAuthor(comment);
 
         commentRepository.delete(comment);
 

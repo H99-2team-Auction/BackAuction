@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class CommentController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws NotFoundProductException {
 
-        CommentResponseDto responseDto = commentService.createComment(productId, requestDto, userDetails.getUser());
+        CommentResponseDto responseDto = commentService.createComment(productId, requestDto, userDetails.getMember());
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
@@ -56,10 +57,9 @@ public class CommentController {
     public ResponseEntity<?> updateComment(@PathVariable Long productId,
                                            @PathVariable Long commentId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                           @RequestBody CommentRequestDto requestDto)
-            throws NotFoundProductException, NotFoundCommentException {
+                                           @RequestBody CommentRequestDto requestDto) {
 
-        CommentResponseDto responseDto = commentService.updateComment(productId, commentId, userDetails.getUser(), requestDto);
+        CommentResponseDto responseDto = commentService.updateComment(productId, commentId, userDetails.getMember(), requestDto);
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
@@ -71,7 +71,7 @@ public class CommentController {
                                            @PathVariable Long commentId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws NotFoundCommentException, NotFoundProductException {
-        CommentResponseDto responseDto = commentService.deleteComment(productId, commentId, userDetails.getUser());
+        CommentResponseDto responseDto = commentService.deleteComment(productId, commentId, userDetails.getMember());
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
@@ -81,7 +81,7 @@ public class CommentController {
      */
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return headers;
     }
 }
