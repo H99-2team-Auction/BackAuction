@@ -17,9 +17,9 @@ public class Product extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "USER_ID")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
 //    private String image;
 

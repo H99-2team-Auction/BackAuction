@@ -1,8 +1,10 @@
 package com.mini.auction.repository;
 
+import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+import java.util.List;
 
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }
