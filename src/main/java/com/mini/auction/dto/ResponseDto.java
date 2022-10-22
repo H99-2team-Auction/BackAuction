@@ -19,5 +19,4 @@ public class ResponseDto<T> {
         return new ResponseDto<>(true, data, null);
     }
 
-
 }

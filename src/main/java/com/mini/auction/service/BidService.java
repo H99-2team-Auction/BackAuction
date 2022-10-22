@@ -1,6 +1,5 @@
 package com.mini.auction.service;
 
-import com.mini.auction.entity.Bid;
 import com.mini.auction.entity.Product;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;

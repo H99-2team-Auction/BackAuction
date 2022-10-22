@@ -3,13 +3,12 @@ package com.mini.auction.service;
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.entity.Comment;
-import com.mini.auction.exception.NotFoundCommentException;
-import com.mini.auction.exception.NotFoundProductException;
+import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
+import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
 import com.mini.auction.entity.Product;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
