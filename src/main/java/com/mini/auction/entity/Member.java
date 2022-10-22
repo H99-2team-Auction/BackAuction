@@ -2,6 +2,7 @@ package com.mini.auction.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.auction.entity.base.BaseTimeEntity;
+import com.mini.auction.exception.CommentExceptions.NotAuthorException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,5 +29,13 @@ public class Member extends BaseTimeEntity {
 
     public boolean validatePassword(PasswordEncoder passwordEncoder, String password){
         return passwordEncoder.matches(password, this.password);
+    }
+
+
+    // 댓글 작성자인지 체크하는 메서드
+    public void isAuthor(Comment comment) {
+        if (!this.username.equals(comment.getMember().getUsername())) {
+            throw new NotAuthorException(this.username);
+        }
     }
 }

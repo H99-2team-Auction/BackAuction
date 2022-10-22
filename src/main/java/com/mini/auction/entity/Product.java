@@ -19,7 +19,7 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private Member member;
 
 //    private String image;
 

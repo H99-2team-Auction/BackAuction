@@ -2,7 +2,6 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.entity.Comment;
-import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mini.auction.dto.request.ProductRequestDto.*;
-import static com.mini.auction.dto.response.ProductResponseDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
+import static com.mini.auction.dto.response.ProductResponseDto.CommonProductResponseDto;
 
 
 @RequiredArgsConstructor
@@ -38,7 +37,6 @@ public class ProductService {
             productsResponseDto.add(new CommonProductResponseDto(findProduct));
         }
 
-        productRepository.findProductsByMemberAndIsSold(new Member())
 
         return productsResponseDto;
     }
