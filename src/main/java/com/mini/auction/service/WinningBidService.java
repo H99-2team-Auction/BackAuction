@@ -16,7 +16,7 @@ public class WinningBidService {
         WinningBid findBid = winningBidRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("존재하지 않는 상품입니다.")
         );
-        findBid.successBid();
+//        findBid.successBid();
 
         // Member에 findProduct를 넣어준다
 
