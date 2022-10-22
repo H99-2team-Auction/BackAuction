@@ -2,11 +2,13 @@ package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.service.ProductService;
+import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,8 +35,9 @@ public class ProductController {
      * 상품 등록
      */
     @PostMapping
-    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        CommonProductResponseDto responseDto = productService.postProduct(productRequestPostDto);
+    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                            @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
+        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), productRequestPostDto);
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
@@ -48,12 +51,11 @@ public class ProductController {
     }
 
     /**
-     * 상품 상세 조회
+     * 상품 상세 조회: 상품 상세 정보 And 해당 상품 댓글 전체 조회
      */
     @GetMapping("/{productId}")
-    public void getProduct(@PathVariable Long productId) {
-        productService.findOneProduct(productId);
-
+    public ResponseEntity<ProductDetailResponseDto> getProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(productService.findOneProduct(productId), setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -65,18 +67,21 @@ public class ProductController {
     }
 
     /**
-     * 상품 낙찰
+     * 상품 수정
      */
-    @PostMapping("/{productId}/sold")
-    public void successBid(@PathVariable Long productId) {
-        productService.auctionedOff(productId);
+    @PatchMapping("/{productId}")
+    public ResponseEntity<CommonProductResponseDto> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                  @PathVariable Long productId,
+                                                                  @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
+        CommonProductResponseDto responseDto = productService.modifyProduct(userDetails.getMember(), productId, productRequestPostDto);
+        return new ResponseEntity<>(responseDto, setHeaders(), HttpStatus.OK);
     }
+
 
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         return headers;
-
     }
 
 

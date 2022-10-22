@@ -1,8 +1,8 @@
 package com.mini.auction.security;
 
-import com.mini.auction.jwt.JwtAccessDeniedHandler;
-import com.mini.auction.jwt.JwtAuthenticationEntryPoint;
-import com.mini.auction.jwt.JwtProvider;
+import com.mini.auction.security.jwt.JwtAccessDeniedHandler;
+import com.mini.auction.security.jwt.JwtAuthenticationEntryPoint;
+import com.mini.auction.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

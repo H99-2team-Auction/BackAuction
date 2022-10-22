@@ -6,7 +6,7 @@ import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
 import com.mini.auction.service.CommentService;
 import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
-import com.mini.auction.service.UserDetailsImpl;
+import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 

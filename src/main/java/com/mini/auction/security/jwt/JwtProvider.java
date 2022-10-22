@@ -1,10 +1,10 @@
-package com.mini.auction.jwt;
+package com.mini.auction.security.jwt;
 
 
 import com.mini.auction.entity.Member;
 import com.mini.auction.repository.RefreshTokenRepository;
-import com.mini.auction.service.UserDetailsImpl;
-import com.mini.auction.service.UserDetailsServiceImpl;
+import com.mini.auction.security.user.UserDetailsImpl;
+import com.mini.auction.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;

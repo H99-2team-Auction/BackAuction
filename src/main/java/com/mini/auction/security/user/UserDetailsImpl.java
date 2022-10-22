@@ -1,4 +1,4 @@
-package com.mini.auction.service;
+package com.mini.auction.security.user;
 
 import com.mini.auction.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
