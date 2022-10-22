@@ -1,6 +1,5 @@
 package com.mini.auction.service;
 
-import com.mini.auction.dto.ProductResponseDto;
 import com.mini.auction.dto.response.ProductResponseDto;
 import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;

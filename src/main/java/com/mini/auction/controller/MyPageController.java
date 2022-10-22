@@ -4,7 +4,7 @@ import com.mini.auction.dto.ProductResponseDto;
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.ProductResponseDto;
 import com.mini.auction.service.MyPageService;
-import com.mini.auction.service.UserDetailsImpl;
+import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

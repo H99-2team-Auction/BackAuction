@@ -1,9 +1,9 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.service.BidService;
+import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ public class BidController {
 
     @PostMapping("/product/{productId}/bid")
     public void bidding(@PathVariable Long productId,
-                        @AuthenticationPrincipal UserDetails userDetails) {
+                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         bidService.addBidder(userDetails.getUsername(), productId);
 
     }

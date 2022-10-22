@@ -1,18 +1,14 @@
 package com.mini.auction.controller;
 
-import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.request.LoginRequestDto;
 import com.mini.auction.dto.request.MemberRequestDto;
 import com.mini.auction.service.MemberService;
-import com.mini.auction.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProductResponseDto {
 
@@ -47,8 +48,20 @@ public class ProductResponseDto {
         private String content;
         private boolean isSold;
 
+        private List<CommentResponseDto> comments;
+
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
+        public ProductDetailResponseDto(Product findProduct, List<CommentResponseDto> commentsResponseDto) {
+            this.title = findProduct.getTitle();
+            this.lowprice = findProduct.getLowprice();
+            this.content = findProduct.getContent();
+            this.isSold = findProduct.isSold();
+            this.createdAt = findProduct.getCreatedAt();
+            this.modifiedAt = findProduct.getModifiedAt();
+
+            this.comments = commentsResponseDto;
+        }
     }
 }

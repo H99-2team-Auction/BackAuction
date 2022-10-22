@@ -25,10 +25,22 @@ public class BidService {
 //
 //        }
 
+
+
         // 있다면 Bid 삭제
         // 없다면 Bid 추가
 //        Bid bid = new Bid(findProduct);
     }
+
+//    private isMaxBid() {
+        // 최고 입찰가가 요구됨
+        // bid => price
+        // 특정 상품에 대한 bid의 size == 0인 경우
+        // 최저값 보다 큰지를 확인해서 크다면 저장하고
+        // size != 0아닌 경우 즉, 1개 이상인 경우라면
+        // 전체의 price 중 최대 값인지 확인한다.
+//        bidRepository.findBy == Max?????
+//    }
 
     private Product isExistedProduct(Long productId) {
         Product findProduct = productRepository.findById(productId).orElseThrow(

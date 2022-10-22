@@ -1,7 +1,7 @@
 package com.mini.auction.security;
 
-import com.mini.auction.jwt.JwtFilter;
-import com.mini.auction.jwt.JwtProvider;
+import com.mini.auction.security.jwt.JwtFilter;
+import com.mini.auction.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

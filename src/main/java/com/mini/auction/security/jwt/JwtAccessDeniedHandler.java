@@ -1,4 +1,4 @@
-package com.mini.auction.jwt;
+package com.mini.auction.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.auction.dto.ResponseDto;

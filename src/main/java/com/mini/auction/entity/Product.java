@@ -1,11 +1,13 @@
 package com.mini.auction.entity;
 
+import com.mini.auction.dto.request.ProductRequestDto;
 import com.mini.auction.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import static com.mini.auction.dto.request.ProductRequestDto.*;
 
@@ -30,7 +32,9 @@ public class Product extends BaseTimeEntity {
     @ColumnDefault("false")
     private boolean isSold;
 
-    public Product(ProductRequestPostDto productRequestPostDto) {
+    public Product(Member member, ProductRequestPostDto productRequestPostDto) {
+        this.member = member;
+
         title = productRequestPostDto.getTitle();
         lowprice = productRequestPostDto.getLowprice();
         content = productRequestPostDto.getContent();
@@ -40,7 +44,9 @@ public class Product extends BaseTimeEntity {
         isSold = true;
     }
 
-
-
-
+    public void updateProduct(ProductRequestPostDto productRequestPostDto) {
+        this.title = productRequestPostDto.getTitle();
+        this.lowprice = productRequestPostDto.getLowprice();
+        this.content = productRequestPostDto.getContent();
+    }
 }
