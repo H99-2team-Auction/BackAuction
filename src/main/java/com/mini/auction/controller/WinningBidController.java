@@ -21,7 +21,7 @@ public class WinningBidController {
      */
     @PostMapping("/{productId}/sold")
     public void successBid(@PathVariable Long productId) {
-        productService.auctionedOff(productId);
+//        productService.auctionedOff(productId);
     }
 
 
