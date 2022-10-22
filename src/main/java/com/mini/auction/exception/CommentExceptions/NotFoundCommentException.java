@@ -1,4 +1,4 @@
-package com.mini.auction.exception;
+package com.mini.auction.exception.CommentExceptions;
 
 public class NotFoundCommentException extends Throwable {
 }

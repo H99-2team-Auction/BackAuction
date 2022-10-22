@@ -1,6 +1,7 @@
 package com.mini.auction.dto.response;
 
 import com.mini.auction.entity.Comment;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class CommentResponseDto {
 
     private String comment;
