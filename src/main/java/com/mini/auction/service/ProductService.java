@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mini.auction.dto.request.ProductRequestDto.*;
-import static com.mini.auction.dto.response.ProductResponseDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
+import static com.mini.auction.dto.response.ProductResponseDto.CommonProductResponseDto;
 
 
 @RequiredArgsConstructor
@@ -36,6 +36,7 @@ public class ProductService {
         for (Product findProduct : findProducts) {
             productsResponseDto.add(new CommonProductResponseDto(findProduct));
         }
+
 
         return productsResponseDto;
     }
