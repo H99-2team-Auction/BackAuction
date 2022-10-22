@@ -1,12 +1,13 @@
 package com.mini.auction.controller;
 
+
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
-import com.mini.auction.service.CommentService;
 import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
 import com.mini.auction.security.user.UserDetailsImpl;
+import com.mini.auction.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,9 @@ import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
 @RequestMapping("/product/{productId}/comment")
+@RestController
 public class CommentController {
 
     private final CommentService commentService;

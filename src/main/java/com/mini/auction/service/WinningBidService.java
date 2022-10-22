@@ -1,6 +1,5 @@
 package com.mini.auction.service;
 
-import com.mini.auction.entity.Product;
 import com.mini.auction.entity.WinningBid;
 import com.mini.auction.repository.WinningBidRepository;
 import lombok.RequiredArgsConstructor;

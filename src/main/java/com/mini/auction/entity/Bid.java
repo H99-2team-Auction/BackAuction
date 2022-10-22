@@ -1,6 +1,7 @@
 package com.mini.auction.entity;
 
 import com.mini.auction.entity.base.BaseTimeEntity;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor
-
+@Getter
 public class Bid extends BaseTimeEntity {
 
     @Id @GeneratedValue
