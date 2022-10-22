@@ -1,9 +1,11 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
+import com.mini.auction.dto.request.ProductRequestDto;
 import com.mini.auction.service.ProductService;
 import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,9 +25,9 @@ import static com.mini.auction.dto.response.ProductResponseDto.*;
 /**
  * 모든 예외처리 RuntimeException
  */
-
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/product")
 public class ProductController {
 
@@ -35,9 +37,18 @@ public class ProductController {
      * 상품 등록
      */
     @PostMapping
-    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(
+//            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                             @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), productRequestPostDto);
+
+        log.info("productRequestPostDto = {}", productRequestPostDto);
+
+        CommonProductResponseDto responseDto = productService.postProduct(
+//                userDetails.getMember(),
+                productRequestPostDto);
+        log.info("======================");
+        log.info("ProductController.addProduct");
+        log.info("======================");
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
@@ -47,6 +58,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<ResponseDto<List<CommonProductResponseDto>>> getProducts() {
         List<CommonProductResponseDto> products = productService.findAllProducts();
+
         return new ResponseEntity<>(ResponseDto.success(products), setHeaders(), HttpStatus.OK);
     }
 
@@ -67,7 +79,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 수정
+     * 상품 수정 테스트 X
      */
     @PatchMapping("/{productId}")
     public ResponseEntity<CommonProductResponseDto> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -86,3 +98,4 @@ public class ProductController {
 
 
 }
+

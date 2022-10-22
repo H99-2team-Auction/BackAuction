@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
-import static com.mini.auction.dto.response.ProductResponseDto.*;
 import static com.mini.auction.dto.response.ProductResponseDto.CommonProductResponseDto;
+import static com.mini.auction.dto.response.ProductResponseDto.ProductDetailResponseDto;
 
 
 @RequiredArgsConstructor
@@ -27,6 +27,7 @@ public class ProductService {
 
     private final CommentRepository commentRepository;
 
+    @Transactional
     public CommonProductResponseDto postProduct(Member member, ProductRequestPostDto productRequestPostDto) {
         Product savedProduct = new Product(member, productRequestPostDto);
         productRepository.save(savedProduct);
@@ -34,12 +35,22 @@ public class ProductService {
         return new CommonProductResponseDto(savedProduct);
     }
 
+    /*    임시     */
+    @Transactional
+    public CommonProductResponseDto postProduct(ProductRequestPostDto productRequestPostDto) {
+        Product savedProduct = new Product(productRequestPostDto);
+        productRepository.save(savedProduct);
+
+        return new CommonProductResponseDto(savedProduct);
+
+    }
+
     /**
      * 상품 전체 검색
      * 입찰자 수, 수정일자 내림차순
      */
     public List<CommonProductResponseDto> findAllProducts() {
-        List<Product> findProducts = productRepository.findAll();
+        List<Product> findProducts = productRepository.findAllByOrderByModifiedAtDesc();
         List<CommonProductResponseDto> productsResponseDto = new ArrayList<>();
 
         for (Product findProduct : findProducts) {
@@ -50,7 +61,7 @@ public class ProductService {
 
     public ProductDetailResponseDto findOneProduct(Long productId) {
         Product findProduct = isExistedProduct(productId);
-        List<Comment> comments = commentRepository.findCommentsByProduct(findProduct);
+        List<Comment> comments = commentRepository.findAllByProduct(findProduct);
         List<CommentResponseDto> commentsResponseDto = new ArrayList<>();
         for (Comment comment : comments) {
             commentsResponseDto.add(new CommentResponseDto(comment));
@@ -101,6 +112,7 @@ public class ProductService {
         );
         return findProduct;
     }
+
 
 
 }

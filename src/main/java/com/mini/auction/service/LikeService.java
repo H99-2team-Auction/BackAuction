@@ -18,6 +18,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final ProductRepository productRepository;
 
+
     public ResponseDto<String> likeProduct(Member member, Long productId) {
         Product findProduct = productRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("해당 게시물이 존재하지 않습니다.")

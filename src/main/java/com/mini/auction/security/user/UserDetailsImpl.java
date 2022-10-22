@@ -11,7 +11,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private final Member member;
     public UserDetailsImpl(Member member) {
-
         this.member = member;
     }
 

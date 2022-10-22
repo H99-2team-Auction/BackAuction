@@ -1,12 +1,13 @@
 package com.mini.auction.service;
 
+
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.entity.Comment;
 import com.mini.auction.entity.Member;
+import com.mini.auction.entity.Product;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
 import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
-import com.mini.auction.entity.Product;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -30,11 +31,7 @@ public class CommentService {
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
 
-        Comment comment = Comment.builder()
-                .comment(requestDto.getComment())
-                .member(member)
-                .Product(product)
-                .build();
+        Comment comment = new Comment(requestDto.getComment(), member, product);
 
         commentRepository.save(comment);
 
@@ -52,7 +49,7 @@ public class CommentService {
         // 해당 게시물 없으면 예외 터트림
         Product product = productRepository.findById(productId).orElseThrow(NotFoundProductException::new);
         // product 객체에 해당하는 댓글 리스트 불러오기
-        List<Comment> commentList = commentRepository.findCommentsByProduct(product);
+        List<Comment> commentList = commentRepository.findAllByProduct(product);
 
         // comment 객체를 response 로 옮겨서 리턴
         List<CommentResponseDto> responseList = new ArrayList<>();
