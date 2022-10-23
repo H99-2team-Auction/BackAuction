@@ -40,7 +40,7 @@ public class ProductService {
      * 입찰자 수, 수정일자 내림차순
      */
     public List<CommonProductResponseDto> findAllProducts() {
-        List<Product> findProducts = productRepository.findAllByOrderByModifiedAtDesc();
+        List<Product> findProducts = productRepository.findByIsSoldFalseOrderByModifiedAtDesc();
         List<CommonProductResponseDto> productsResponseDto = new ArrayList<>();
 
         for (Product findProduct : findProducts) {
