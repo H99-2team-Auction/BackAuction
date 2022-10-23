@@ -35,16 +35,6 @@ public class ProductService {
         return new CommonProductResponseDto(savedProduct);
     }
 
-    /*    임시     */
-    @Transactional
-    public CommonProductResponseDto postProduct(ProductRequestPostDto productRequestPostDto) {
-        Product savedProduct = new Product(productRequestPostDto);
-        productRepository.save(savedProduct);
-
-        return new CommonProductResponseDto(savedProduct);
-
-    }
-
     /**
      * 상품 전체 검색
      * 입찰자 수, 수정일자 내림차순
