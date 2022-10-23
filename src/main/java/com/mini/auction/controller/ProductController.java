@@ -1,8 +1,8 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.security.user.UserDetailsImpl;
 import com.mini.auction.service.ProductService;
+import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.mini.auction.dto.request.ProductRequestDto.*;
@@ -36,13 +36,14 @@ public class ProductController {
      * 상품 등록
      */
     @PostMapping
-    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(
+//            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                             @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
 
         log.info("productRequestPostDto = {}", productRequestPostDto);
 
         CommonProductResponseDto responseDto = productService.postProduct(
-                userDetails.getMember(),
+//                userDetails.getMember(),
                 productRequestPostDto);
         log.info("======================");
         log.info("ProductController.addProduct");
@@ -83,17 +84,14 @@ public class ProductController {
     public ResponseEntity<CommonProductResponseDto> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                   @PathVariable Long productId,
                                                                   @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        log.info("========================");
-        log.info("userDetails.getMember() = {}", userDetails.getMember());
-        log.info("productRequestPostDto = {}", productRequestPostDto);
-        log.info("========================");
         CommonProductResponseDto responseDto = productService.modifyProduct(userDetails.getMember(), productId, productRequestPostDto);
         return new ResponseEntity<>(responseDto, setHeaders(), HttpStatus.OK);
     }
 
+
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return headers;
     }
 
