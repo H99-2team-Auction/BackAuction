@@ -1,29 +1,35 @@
 package com.mini.auction.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor
-@Table(name = "refresh_token")
 @Entity
+@NoArgsConstructor
 public class RefreshToken {
 
     @Id
-    @Column(name = "rt_key")
-    private String key;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotBlank
+    private String refreshToken;
+    @NotBlank
+    private String memberUsername;
 
-    @Column(name = "rt_value")
-    private String value;
-
-
-    @Builder
-    public RefreshToken(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public RefreshToken(String token, String username) {
+        this.refreshToken = token;
+        this.memberUsername = username;
     }
+
+    public RefreshToken updateToken(String token) {
+        this.refreshToken = token;
+        return this;
+    }
+
 }
