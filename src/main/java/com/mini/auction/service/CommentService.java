@@ -37,7 +37,7 @@ public class CommentService {
 
         return CommentResponseDto.builder()
                 .comment(comment.getComment())
-                .username(member.getUsername())
+                .username(comment.getMember().getUsername())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .build();

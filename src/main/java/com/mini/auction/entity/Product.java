@@ -28,6 +28,9 @@ public class Product extends BaseTimeEntity {
     private Integer lowPrice;
     private String content;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isSold;
+
 
     public Product(Member member, ProductRequestPostDto productRequestPostDto) {
         this.member = member;
