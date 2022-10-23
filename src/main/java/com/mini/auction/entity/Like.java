@@ -17,11 +17,11 @@ public class Like extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 

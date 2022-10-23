@@ -1,7 +1,7 @@
 package com.mini.auction.controller;
 
-import com.mini.auction.service.BidService;
 import com.mini.auction.security.user.UserDetailsImpl;
+import com.mini.auction.service.BidService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;

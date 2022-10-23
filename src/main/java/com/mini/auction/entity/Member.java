@@ -1,5 +1,6 @@
 package com.mini.auction.entity;
 
+import com.mini.auction.dto.request.MemberRequestDto;
 import com.mini.auction.entity.base.BaseTimeEntity;
 import com.mini.auction.exception.CommentExceptions.NotAuthorException;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,10 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
-    public boolean validatePassword(PasswordEncoder passwordEncoder, String password){
-        return passwordEncoder.matches(password, this.password);
+    public Member(MemberRequestDto memberReqDto) {
+        this.username = memberReqDto.getUsername();
+        this.password = memberReqDto.getPassword();
     }
-
 
     // 댓글 작성자인지 체크하는 메서드
     public void isAuthor(Comment comment) {
