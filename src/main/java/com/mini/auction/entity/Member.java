@@ -1,6 +1,5 @@
 package com.mini.auction.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.auction.entity.base.BaseTimeEntity;
 import com.mini.auction.exception.CommentExceptions.NotAuthorException;
 import lombok.AllArgsConstructor;

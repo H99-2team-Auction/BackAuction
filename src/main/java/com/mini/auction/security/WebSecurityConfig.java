@@ -39,7 +39,10 @@ public class WebSecurityConfig {
 
         //jwt토큰을 이용해서 인증하는 경우 stateless방식을 사용하기 때문에 default 값인 csrf기능을 사용할 필요가 없다.
         http.cors();
-        http.csrf().disable();
+        http.csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) //인증
+                .accessDeniedHandler(jwtAccessDeniedHandler);          //인가
 
         // Spring Security는 기본적으로 세션방식(stateful) 사용
         // Json Web Token을 사용할때는 stateless(클라이언트의 정보를 서버에 저장 X)
@@ -47,19 +50,21 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
 
+//                .antMatchers("/**").permitAll()
+
                 //아래경로 진입 모두 허용
-                .antMatchers(HttpMethod.POST,"/signup").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/signup").permitAll()
+                .antMatchers( "/login").permitAll()
+
                 .antMatchers(HttpMethod.GET, "/product/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/post/{postID}").permitAll()
-                .antMatchers(HttpMethod.GET, "/comment/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/product/{productId}/comment/**").permitAll()
 
                 //그이외에 인증 필요
                 .anyRequest().authenticated();
 
-        http.exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)//인증
-                .accessDeniedHandler(jwtAccessDeniedHandler);//인가
+//        http.exceptionHandling()
+//                .authenticationEntryPoint(jwtAuthenticationEntryPoint) //인증
+//                .accessDeniedHandler(jwtAccessDeniedHandler);          //인가
 
         //TokenProvider와 JwtFilter를 적용
         http.apply(new JwtSecurityConfig(jwtProvider));

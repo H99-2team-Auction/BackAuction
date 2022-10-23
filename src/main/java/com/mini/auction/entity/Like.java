@@ -1,5 +1,6 @@
 package com.mini.auction.entity;
 
+import com.mini.auction.entity.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import static javax.persistence.FetchType.*;
 @NoArgsConstructor
 @Table(name = "likes")
 @Getter
-public class Like {
+public class Like extends BaseTimeEntity {
 
     @Id @GeneratedValue
     private Long id;

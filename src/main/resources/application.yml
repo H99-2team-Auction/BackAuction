@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
+#    url: jdbc:h2:tcp://localhost/~/auctiondb
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -28,8 +29,13 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-jwt:
-  secretKey:
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+#jwt:
+#  secretKey:
+
 
 
 server:

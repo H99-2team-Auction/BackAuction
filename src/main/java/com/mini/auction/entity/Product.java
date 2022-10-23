@@ -1,52 +1,52 @@
 package com.mini.auction.entity;
 
-import com.mini.auction.dto.request.ProductRequestDto;
 import com.mini.auction.entity.base.BaseTimeEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
-import static com.mini.auction.dto.request.ProductRequestDto.*;
+import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 //    private String image;
 
     private String title;
-    private Integer lowprice;
+    private Integer lowPrice;
     private String content;
 
-    @ColumnDefault("false")
-    private boolean isSold;
 
     public Product(Member member, ProductRequestPostDto productRequestPostDto) {
         this.member = member;
 
         title = productRequestPostDto.getTitle();
-        lowprice = productRequestPostDto.getLowprice();
+        lowPrice = productRequestPostDto.getLowPrice();
         content = productRequestPostDto.getContent();
     }
 
-    public void successBid() {
-        isSold = true;
+    /*    임시     */
+    public Product(ProductRequestPostDto productRequestPostDto) {
+        this.title = productRequestPostDto.getTitle();
+        this.lowPrice = productRequestPostDto.getLowPrice();
+        this.content = productRequestPostDto.getContent();
     }
 
     public void updateProduct(ProductRequestPostDto productRequestPostDto) {
         this.title = productRequestPostDto.getTitle();
-        this.lowprice = productRequestPostDto.getLowprice();
+        this.lowPrice = productRequestPostDto.getLowPrice();
         this.content = productRequestPostDto.getContent();
     }
 }
