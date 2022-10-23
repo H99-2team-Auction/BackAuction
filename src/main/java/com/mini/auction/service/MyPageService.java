@@ -26,12 +26,12 @@ public class MyPageService {
      * @param member
      * @return
      */
-    public List<CommonProductResponseDto> getSoldProductList(Member member) {
-        // sql 로 db 에서 찾는게 효율적인지 서버에서 찾는게 효율적인지?
-        // 왜 자꾸 자동완성이 isSold 라고 안뜨고 SoldIs 라고 뜸?
-        List<WinningBid> winningBidList = winningBidRepository.
-        // product 객체 responseDto 에 각각 넣기
-    }
+//    public List<CommonProductResponseDto> getSoldProductList(Member member) {
+//        // sql 로 db 에서 찾는게 효율적인지 서버에서 찾는게 효율적인지?
+//        // 왜 자꾸 자동완성이 isSold 라고 안뜨고 SoldIs 라고 뜸?
+//
+//        // product 객체 responseDto 에 각각 넣기
+//    }
 
     /**
      * 입찰한 상품 목록 조회

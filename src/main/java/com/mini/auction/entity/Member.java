@@ -26,6 +26,7 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+
     public boolean validatePassword(PasswordEncoder passwordEncoder, String password){
         return passwordEncoder.matches(password, this.password);
     }

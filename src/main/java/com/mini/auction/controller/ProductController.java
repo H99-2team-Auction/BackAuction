@@ -1,7 +1,6 @@
 package com.mini.auction.controller;
 
 import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.dto.request.ProductRequestDto;
 import com.mini.auction.service.ProductService;
 import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.mini.auction.dto.request.ProductRequestDto.*;
@@ -92,7 +91,7 @@ public class ProductController {
 
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return headers;
     }
 

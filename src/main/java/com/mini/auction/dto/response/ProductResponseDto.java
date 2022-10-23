@@ -30,7 +30,7 @@ public class ProductResponseDto {
 
         public CommonProductResponseDto(Product savedProduct) {
             title = savedProduct.getTitle();
-            lowprice = savedProduct.getLowprice();
+            lowprice = savedProduct.getLowPrice();
             content = savedProduct.getContent();
             createdAt = savedProduct.getCreatedAt();
             modifiedAt = savedProduct.getModifiedAt();
@@ -56,7 +56,7 @@ public class ProductResponseDto {
 
         public ProductDetailResponseDto(Product findProduct, List<CommentResponseDto> commentsResponseDto) {
             this.title = findProduct.getTitle();
-            this.lowprice = findProduct.getLowprice();
+            this.lowprice = findProduct.getLowPrice();
             this.content = findProduct.getContent();
 //            this.isSold = findProduct.isSold();
             this.createdAt = findProduct.getCreatedAt();
