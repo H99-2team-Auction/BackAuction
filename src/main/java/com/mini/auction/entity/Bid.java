@@ -16,16 +16,16 @@ public class Bid extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     // 낙찰
-    @OneToOne(fetch = LAZY)
+    @OneToOne
     @JoinColumn(name = "WINNINGBID_ID")
     private WinningBid winningBid;
 
