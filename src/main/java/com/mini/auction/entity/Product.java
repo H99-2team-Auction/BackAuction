@@ -28,6 +28,9 @@ public class Product extends BaseTimeEntity {
     private Integer lowPrice;
     private String content;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isSold;
+
 
     public Product(Member member, ProductRequestPostDto productRequestPostDto) {
         this.member = member;
@@ -37,12 +40,13 @@ public class Product extends BaseTimeEntity {
         content = productRequestPostDto.getContent();
     }
 
-    /*    임시     */
-    public Product(ProductRequestPostDto productRequestPostDto) {
-        this.title = productRequestPostDto.getTitle();
-        this.lowPrice = productRequestPostDto.getLowPrice();
-        this.content = productRequestPostDto.getContent();
+    /**
+     * 낙찰 시 soldProduct 메서드 호출
+     */
+    public void soldProduct() {
+        this.isSold = true;
     }
+
 
     public void updateProduct(ProductRequestPostDto productRequestPostDto) {
         this.title = productRequestPostDto.getTitle();

@@ -37,13 +37,13 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(
-//            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                             @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
 
         log.info("productRequestPostDto = {}", productRequestPostDto);
 
         CommonProductResponseDto responseDto = productService.postProduct(
-//                userDetails.getMember(),
+                userDetails.getMember(),
                 productRequestPostDto);
         log.info("======================");
         log.info("ProductController.addProduct");
@@ -78,7 +78,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 수정 테스트 X
+     * 상품 수정
      */
     @PatchMapping("/{productId}")
     public ResponseEntity<CommonProductResponseDto> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,

@@ -26,7 +26,7 @@ public class ProductResponseDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-//        private boolean isSold;
+        private boolean isSold;
 
         public CommonProductResponseDto(Product savedProduct) {
             title = savedProduct.getTitle();
@@ -34,7 +34,7 @@ public class ProductResponseDto {
             content = savedProduct.getContent();
             createdAt = savedProduct.getCreatedAt();
             modifiedAt = savedProduct.getModifiedAt();
-//            isSold = savedProduct.isSold();
+            isSold = savedProduct.isSold();
         }
     }
 
@@ -58,7 +58,7 @@ public class ProductResponseDto {
             this.title = findProduct.getTitle();
             this.lowprice = findProduct.getLowPrice();
             this.content = findProduct.getContent();
-//            this.isSold = findProduct.isSold();
+            this.isSold = findProduct.isSold();
             this.createdAt = findProduct.getCreatedAt();
             this.modifiedAt = findProduct.getModifiedAt();
 
