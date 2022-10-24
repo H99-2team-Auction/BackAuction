@@ -34,7 +34,9 @@ public class BidService {
             // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
             compareToLowprice(findProduct, bidRequestDto);
             // db 에 bid 저장
-            bidRepository.save(new Bid(findProduct, member, bidRequestDto.getBiddingPrice()));
+            // bid.addParticipant 에서 nullPointerException -> 초기화해줘서 해결
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bidRepository.save(bid);
         } else {
             // 최고 입찰가보다 낮은 금액을 입력하면 예외처리
             compareToHighprice(bid, bidRequestDto);
@@ -45,6 +47,14 @@ public class BidService {
 
         return new BidResponseDto(bid);
     }
+
+
+
+
+
+
+
+
 
     private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
         if (product.getLowPrice() > bidRequestDto.getBiddingPrice()) {
@@ -58,21 +68,10 @@ public class BidService {
         }
     }
 
-//    private isMaxBid() {
-    // 최고 입찰가가 요구됨
-    // bid => price
-    // 특정 상품에 대한 bid 의 size == 0인 경우
-    // 최저값 보다 큰지를 확인해서 크다면 저장하고
-    // size != 0아닌 경우 즉, 1개 이상인 경우라면
-    // 전체의 price 중 최대 값인지 확인한다.
-//        bidRepository.findBy == Max?????
-//    }
-
     private Product isExistedProduct(Long productId) {
-        Product findProduct = productRepository.findById(productId).orElseThrow(
+        return productRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
         );
-        return findProduct;
     }
 
 
