@@ -34,4 +34,5 @@ public class LikeService {
         likeRepository.deleteById(liked.get().getId());
         return ResponseDto.success(productId + "번 상품이 관심상품에서 제거되었습니다.");
     }
+    // productId를 대신할 data 가 필요할 것 같습니다~!(예를 들면 title????)
 }

@@ -20,11 +20,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username){
 
         Member member = memberRepository.findByUsername(username).orElseThrow(
-                ()-> new UsernameNotFoundException("Account가 존재하지 않습니다.")
+                ()-> new UsernameNotFoundException("Account 가 존재하지 않습니다.")
         );
 
-        UserDetailsImpl userDetails = new UserDetailsImpl(member);
-
-        return userDetails;
+        return new UserDetailsImpl(member);
     }
 }
