@@ -43,17 +43,11 @@ public class BidService {
             bid.update(bidRequestDto.getBiddingPrice());
         }
         // bid null 일수도 있다고 인텔리제이에서 알려주는데 if문 지나면 null 아닌데 어떻게 풀어야하지????
-        bid.addParticipant();
+//        bid.addParticipant();
 
-        return new BidResponseDto(bid);
+
+        return new BidResponseDto(bid, findProduct, member);
     }
-
-
-
-
-
-
-
 
 
     private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
