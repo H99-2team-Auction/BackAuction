@@ -5,6 +5,9 @@ import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class BidResponseDto {
 
@@ -12,15 +15,19 @@ public class BidResponseDto {
 
     private Integer participantCnt;
 
-    private Product product;
+    private String title;
 
-    private Member member;
+    private String username;
 
-    public  BidResponseDto(Bid bid) {
+    List<String> memberList = new ArrayList<>();
+
+
+    public  BidResponseDto(Bid bid, Product product, Member member) {
         this.biddingPrice = bid.getBiddingPrice();
-        this.participantCnt = bid.getParticipantCnt();
-        this.product = bid.getProduct();
-        this.member = bid.getMember();
+        this.title = product.getTitle();
+        this.username = member.getUsername();
+        this.memberList.add(member.getUsername());
+        this.participantCnt = memberList.size();
     }
 
 }
