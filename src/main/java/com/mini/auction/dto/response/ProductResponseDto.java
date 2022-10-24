@@ -2,6 +2,7 @@ package com.mini.auction.dto.response;
 
 import com.mini.auction.entity.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
