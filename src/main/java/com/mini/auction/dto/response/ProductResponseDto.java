@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class ProductResponseDto {
     public static class CommonProductResponseDto {
 
         private String title;
-        private Integer lowprice;
+        private Integer lowPrice;
 //        private MultipartFile[] multipartFiles;
 //        private String username;
 
@@ -29,12 +27,12 @@ public class ProductResponseDto {
         private boolean isSold;
 
         public CommonProductResponseDto(Product savedProduct) {
-            title = savedProduct.getTitle();
-            lowprice = savedProduct.getLowPrice();
-            content = savedProduct.getContent();
-            createdAt = savedProduct.getCreatedAt();
-            modifiedAt = savedProduct.getModifiedAt();
-            isSold = savedProduct.isSold();
+            this.title = savedProduct.getTitle();
+            this.lowPrice = savedProduct.getLowPrice();
+            this.content = savedProduct.getContent();
+            this.createdAt = savedProduct.getCreatedAt();
+            this.modifiedAt = savedProduct.getModifiedAt();
+            this.isSold = savedProduct.isSold();
         }
     }
 
@@ -43,7 +41,7 @@ public class ProductResponseDto {
     @NoArgsConstructor
     public static class ProductDetailResponseDto {
         private String title;
-        private Integer lowprice;
+        private Integer lowPrice;
 //        private MultipartFile[] multipartFiles;
 //        private String username;
         private String content;
@@ -56,7 +54,7 @@ public class ProductResponseDto {
 
         public ProductDetailResponseDto(Product findProduct, List<CommentResponseDto> commentsResponseDto) {
             this.title = findProduct.getTitle();
-            this.lowprice = findProduct.getLowPrice();
+            this.lowPrice = findProduct.getLowPrice();
             this.content = findProduct.getContent();
             this.isSold = findProduct.isSold();
             this.createdAt = findProduct.getCreatedAt();

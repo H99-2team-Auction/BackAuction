@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.mini.auction.dto.request.ProductRequestDto.*;
@@ -84,7 +84,7 @@ public class ProductController {
 
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         return headers;
     }
 
