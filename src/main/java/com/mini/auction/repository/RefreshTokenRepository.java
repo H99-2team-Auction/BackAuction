@@ -1,6 +1,6 @@
 package com.mini.auction.repository;
 
-import com.mini.auction.entity.RefreshToken;
+import com.mini.auction.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

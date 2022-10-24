@@ -2,9 +2,9 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
-import com.mini.auction.entity.Bid;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Bid;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import com.mini.auction.exception.WrongPriceException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

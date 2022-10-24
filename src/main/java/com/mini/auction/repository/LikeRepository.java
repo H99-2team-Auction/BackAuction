@@ -1,8 +1,8 @@
 package com.mini.auction.repository;
 
-import com.mini.auction.entity.Like;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Like;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

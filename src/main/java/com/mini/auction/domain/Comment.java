@@ -1,7 +1,7 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
 import com.mini.auction.dto.request.CommentRequestDto;
-import com.mini.auction.entity.base.BaseTimeEntity;
+import com.mini.auction.domain.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

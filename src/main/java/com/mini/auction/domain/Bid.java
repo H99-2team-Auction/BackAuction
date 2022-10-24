@@ -1,13 +1,10 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
-import com.mini.auction.entity.base.BaseTimeEntity;
+import com.mini.auction.domain.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.FetchType.*;
 

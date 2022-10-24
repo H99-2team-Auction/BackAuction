@@ -1,4 +1,4 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.mini.auction.security.jwt;
 
 
-import com.mini.auction.entity.RefreshToken;
+import com.mini.auction.domain.RefreshToken;
 import com.mini.auction.repository.RefreshTokenRepository;
 import com.mini.auction.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Jwts;

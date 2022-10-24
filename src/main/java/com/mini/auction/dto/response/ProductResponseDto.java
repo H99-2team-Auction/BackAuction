@@ -1,6 +1,6 @@
 package com.mini.auction.dto.response;
 
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

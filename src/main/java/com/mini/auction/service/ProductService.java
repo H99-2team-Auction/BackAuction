@@ -2,13 +2,14 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.CommentResponseDto;
-import com.mini.auction.entity.Comment;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Comment;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +32,10 @@ public class ProductService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public CommonProductResponseDto postProduct(Member member, ProductRequestPostDto productRequestPostDto) {
+    public CommonProductResponseDto postProduct(Member member,
+                                                ProductRequestPostDto productRequestPostDto) {
         memberRepository.findByUsername(member.getUsername()).orElseThrow(
-                () -> new RuntimeException("Member 정보가 존재하지 않습니다.")
+                () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
         );
 
         Product savedProduct = new Product(member, productRequestPostDto);

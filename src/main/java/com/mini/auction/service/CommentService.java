@@ -3,9 +3,9 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
-import com.mini.auction.entity.Comment;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Comment;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
 import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
 import com.mini.auction.repository.CommentRepository;
