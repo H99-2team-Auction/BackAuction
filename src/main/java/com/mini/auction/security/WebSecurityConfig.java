@@ -1,6 +1,8 @@
 package com.mini.auction.security;
 
-import com.mini.auction.security.jwt.*;
+import com.mini.auction.security.jwt.AuthenticationEntryPointException;
+import com.mini.auction.security.jwt.JwtAuthFilter;
+import com.mini.auction.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,18 +44,29 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+
+        configuration.setAllowedMethods(Arrays.asList("*"));
+
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        configuration.setExposedHeaders(Arrays.asList("Access_Token", "Refresh_Token"));
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors().configurationSource(request -> {
-            var cors = new CorsConfiguration();
-            cors.setAllowedOriginPatterns(List.of("*"));
-            cors.setAllowedMethods(List.of("*"));
-            cors.setAllowedHeaders(List.of("*"));
-            cors.addExposedHeader("Access_Token");
-            cors.addExposedHeader("Refresh_Token");
-            cors.setAllowCredentials(true);
-            return cors;
-        });;
+        http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointException);

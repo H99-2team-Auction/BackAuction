@@ -9,6 +9,7 @@ import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import static com.mini.auction.dto.response.ProductResponseDto.ProductDetailResp
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
@@ -34,6 +36,9 @@ public class ProductService {
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
                                                 ProductRequestPostDto productRequestPostDto) {
+        log.info("=====================");
+        log.info("member.getUsername() = {}", member.getUsername());
+        log.info("=====================");
         memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
         );

@@ -35,7 +35,7 @@ public class BidResponseDto {
         return participantList;
     }
 
-    public  BidResponseDto(Bid bid, Product product, Member member) {
+    public BidResponseDto(Bid bid, Product product, Member member) {
         this.biddingPrice = bid.getBiddingPrice();
         this.title = product.getTitle();
         this.username = member.getUsername();

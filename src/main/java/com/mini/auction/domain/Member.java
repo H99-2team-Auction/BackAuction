@@ -16,7 +16,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "member")
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

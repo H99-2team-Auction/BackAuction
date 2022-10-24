@@ -18,8 +18,6 @@ public class ProductResponseDto {
     public static class CommonProductResponseDto {
 
         private Long id;
-
-
         private String title;
         private Integer lowPrice;
 //        private MultipartFile[] multipartFiles;
@@ -28,18 +26,16 @@ public class ProductResponseDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-        private boolean isSold;
+        private Boolean isSold;
 
         public CommonProductResponseDto(Product savedProduct) {
             this.id = savedProduct.getId();
-
-
             this.title = savedProduct.getTitle();
             this.lowPrice = savedProduct.getLowPrice();
             this.content = savedProduct.getContent();
             this.createdAt = savedProduct.getCreatedAt();
             this.modifiedAt = savedProduct.getModifiedAt();
-            this.isSold = savedProduct.isSold();
+            this.isSold = savedProduct.getIsSold();
         }
     }
 
@@ -52,7 +48,7 @@ public class ProductResponseDto {
 //        private MultipartFile[] multipartFiles;
 //        private String username;
         private String content;
-        private boolean isSold;
+        private Boolean isSold;
 
         private List<CommentResponseDto> comments;
 
@@ -63,7 +59,7 @@ public class ProductResponseDto {
             this.title = findProduct.getTitle();
             this.lowPrice = findProduct.getLowPrice();
             this.content = findProduct.getContent();
-            this.isSold = findProduct.isSold();
+            this.isSold = findProduct.getIsSold();
             this.createdAt = findProduct.getCreatedAt();
             this.modifiedAt = findProduct.getModifiedAt();
 
