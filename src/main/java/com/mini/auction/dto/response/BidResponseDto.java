@@ -19,15 +19,15 @@ public class BidResponseDto {
 
     private String username;
 
-    List<String> memberList = new ArrayList<>();
+    List<String> bidParticipants;
 
 
-    public  BidResponseDto(Bid bid, Product product, Member member) {
+    public  BidResponseDto(Bid bid, Product product, Member member, List<String> bidParticipants) {
         this.biddingPrice = bid.getBiddingPrice();
         this.title = product.getTitle();
         this.username = member.getUsername();
-        this.memberList.add(member.getUsername());
-        this.participantCnt = memberList.size();
+        this.bidParticipants = bidParticipants;
+        this.participantCnt = bidParticipants.size();
     }
 
 }

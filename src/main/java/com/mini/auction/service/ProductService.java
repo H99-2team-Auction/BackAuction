@@ -6,6 +6,7 @@ import com.mini.auction.entity.Comment;
 import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;
 import com.mini.auction.repository.CommentRepository;
+import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,14 @@ public class ProductService {
 
     private final CommentRepository commentRepository;
 
+    private final MemberRepository memberRepository;
+
     @Transactional
     public CommonProductResponseDto postProduct(Member member, ProductRequestPostDto productRequestPostDto) {
+        memberRepository.findByUsername(member.getUsername()).orElseThrow(
+                () -> new RuntimeException("Member 정보가 존재하지 않습니다.")
+        );
+
         Product savedProduct = new Product(member, productRequestPostDto);
         productRepository.save(savedProduct);
 

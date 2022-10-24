@@ -38,9 +38,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                             @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        CommonProductResponseDto responseDto = productService.postProduct(
-                userDetails.getMember(),
-                productRequestPostDto);
+        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), productRequestPostDto);
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 

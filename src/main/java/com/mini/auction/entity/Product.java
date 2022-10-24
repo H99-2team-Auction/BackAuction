@@ -22,7 +22,7 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-//    private String image;
+//    private String igmage;
 
     private String title;
     private Integer lowPrice;

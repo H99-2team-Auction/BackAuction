@@ -16,6 +16,9 @@ public class ProductResponseDto {
     @NoArgsConstructor
     public static class CommonProductResponseDto {
 
+        private Long id;
+
+
         private String title;
         private Integer lowPrice;
 //        private MultipartFile[] multipartFiles;
@@ -27,6 +30,9 @@ public class ProductResponseDto {
         private boolean isSold;
 
         public CommonProductResponseDto(Product savedProduct) {
+            this.id = savedProduct.getId();
+
+
             this.title = savedProduct.getTitle();
             this.lowPrice = savedProduct.getLowPrice();
             this.content = savedProduct.getContent();
