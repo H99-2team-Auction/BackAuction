@@ -34,10 +34,9 @@ public class Product extends BaseTimeEntity {
 
     public Product(Member member, ProductRequestPostDto productRequestPostDto) {
         this.member = member;
-
-        title = productRequestPostDto.getTitle();
-        lowPrice = productRequestPostDto.getLowPrice();
-        content = productRequestPostDto.getContent();
+        this.title = productRequestPostDto.getTitle();
+        this.lowPrice = productRequestPostDto.getLowPrice();
+        this.content = productRequestPostDto.getContent();
     }
 
     /**
