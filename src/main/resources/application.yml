@@ -5,11 +5,11 @@ spring:
     username: admin
     password: qufdk12ekfdk12^^
 
-  #    url: jdbc:h2:mem:testdb
   #    url: jdbc:h2:tcp://localhost/~/auctiondb
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
   #   mem:testdb;MODE=MYSQL
 
   h2:
