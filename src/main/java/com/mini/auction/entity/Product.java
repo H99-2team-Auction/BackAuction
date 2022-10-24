@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.List;
-
 import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
 
 @Entity
@@ -24,7 +22,7 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-//    private String image;
+//    private String igmage;
 
     private String title;
     private Integer lowPrice;
