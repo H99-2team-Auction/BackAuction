@@ -46,8 +46,8 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<?> getCommentsList(@PathVariable Long productId)
             throws NotFoundProductException {
-        List<CommentResponseDto> responseDtos = commentService.getCommentsList(productId);
-        return new ResponseEntity<>(ResponseDto.success(responseDtos), setHeaders(), HttpStatus.OK);
+        List<CommentResponseDto> responseDtoList = commentService.getCommentsList(productId);
+        return new ResponseEntity<>(ResponseDto.success(responseDtoList), setHeaders(), HttpStatus.OK);
     }
 
     /**
