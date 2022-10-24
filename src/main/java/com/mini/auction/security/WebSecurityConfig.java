@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity //시큐리티 활성화
@@ -43,7 +44,16 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors().configurationSource(corsConfigurationSource());;
+        http.cors().configurationSource(request -> {
+            var cors = new CorsConfiguration();
+            cors.setAllowedOriginPatterns(List.of("*"));
+            cors.setAllowedMethods(List.of("*"));
+            cors.setAllowedHeaders(List.of("*"));
+            cors.addExposedHeader("AccessToken");
+            cors.addExposedHeader("RefreshToken");
+            cors.setAllowCredentials(true);
+            return cors;
+        });;
         http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointException);
@@ -62,21 +72,5 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization"));
-
-        // This allow us to expose the headers
-        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
-                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
 }

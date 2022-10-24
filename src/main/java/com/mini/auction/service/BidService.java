@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BidService {
@@ -46,7 +50,17 @@ public class BidService {
 //        bid.addParticipant();
 
 
-        return new BidResponseDto(bid, findProduct, member);
+        return new BidResponseDto(bid, findProduct, member, getBidParticipants(findProduct));
+    }
+
+    // BidRepository 에서 Product 에 입찰한 멤버 모두 불러오는 메서드
+    private List<String> getBidParticipants(Product product) {
+        List<Bid> bidList = bidRepository.findBidsByProduct(product);
+        List<String> usernameList = new ArrayList<>();
+        for (Bid bid : bidList) {
+            usernameList.add(bid.getMember().getUsername());
+        }
+        return usernameList;
     }
 
 

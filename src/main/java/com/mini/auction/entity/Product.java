@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
 
 @Entity

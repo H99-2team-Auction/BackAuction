@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -22,6 +25,7 @@ public class Bid extends BaseTimeEntity {
     @Column
     private Integer participantCnt = 0;
 
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
@@ -34,6 +38,8 @@ public class Bid extends BaseTimeEntity {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "WINNINGBID_ID")
     private WinningBid winningBid;
+
+
 
     public Bid(Product product, Member member, Integer biddingPrice) {
         this.product = product;
