@@ -1,10 +1,11 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
 import com.mini.auction.dto.request.CommentRequestDto;
-import com.mini.auction.entity.base.BaseTimeEntity;
+import com.mini.auction.domain.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
 import javax.persistence.*;
 
@@ -21,12 +22,12 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
     // Product > product
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 

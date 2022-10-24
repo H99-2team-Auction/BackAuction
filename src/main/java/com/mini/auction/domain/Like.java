@@ -1,12 +1,10 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
-import com.mini.auction.entity.base.BaseTimeEntity;
+import com.mini.auction.domain.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor
@@ -17,11 +15,11 @@ public class Like extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 

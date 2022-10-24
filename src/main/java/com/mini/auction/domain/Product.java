@@ -1,6 +1,7 @@
-package com.mini.auction.entity;
+package com.mini.auction.domain;
 
-import com.mini.auction.entity.base.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mini.auction.domain.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import static com.mini.auction.dto.request.ProductRequestDto.ProductRequestPostDto;
+import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
@@ -18,8 +20,9 @@ public class Product extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
 //    private String igmage;
@@ -28,8 +31,7 @@ public class Product extends BaseTimeEntity {
     private Integer lowPrice;
     private String content;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean isSold;
+    private Boolean isSold;
 
 
     public Product(Member member, ProductRequestPostDto productRequestPostDto) {
@@ -37,6 +39,7 @@ public class Product extends BaseTimeEntity {
         this.title = productRequestPostDto.getTitle();
         this.lowPrice = productRequestPostDto.getLowPrice();
         this.content = productRequestPostDto.getContent();
+        this.isSold = false;
     }
 
     /**

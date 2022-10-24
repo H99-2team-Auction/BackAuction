@@ -1,6 +1,6 @@
 package com.mini.auction.security.user;
 
-import com.mini.auction.entity.Member;
+import com.mini.auction.domain.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

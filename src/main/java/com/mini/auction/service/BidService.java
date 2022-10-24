@@ -2,9 +2,9 @@ package com.mini.auction.service;
 
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
-import com.mini.auction.entity.Bid;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Bid;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import com.mini.auction.exception.WrongPriceException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -49,15 +49,16 @@ public class BidService {
 //        // bid null 일수도 있다고 인텔리제이에서 알려주는데 if문 지나면 null 아닌데 어떻게 풀어야하지????
 ////        bid.addParticipant();
 
+        Bid bid;
         if (bidRepository.findBidByProduct(findProduct).isEmpty()) {
             // bid 생성
-            Bid bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
             // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
             compareToLowprice(findProduct, bidRequestDto);
             // bid 저장
             bidRepository.save(bid);
         } else {
-            Bid bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
             compareToHighprice(bid, bidRequestDto);
         }
 

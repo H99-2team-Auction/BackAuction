@@ -1,11 +1,12 @@
 package com.mini.auction.dto;
 
-import com.mini.auction.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ResponseDto<T> {
     private boolean success;
     private T data;

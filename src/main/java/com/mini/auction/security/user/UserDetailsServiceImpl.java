@@ -1,6 +1,6 @@
 package com.mini.auction.security.user;
 
-import com.mini.auction.entity.Member;
+import com.mini.auction.domain.Member;
 import com.mini.auction.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.mini.auction.dto.response;
 
-import com.mini.auction.entity.Bid;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Bid;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class BidResponseDto {
         return participantList;
     }
 
-    public  BidResponseDto(Bid bid, Product product, Member member) {
+    public BidResponseDto(Bid bid, Product product, Member member) {
         this.biddingPrice = bid.getBiddingPrice();
         this.title = product.getTitle();
         this.username = member.getUsername();

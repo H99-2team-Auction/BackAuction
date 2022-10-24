@@ -1,9 +1,9 @@
 package com.mini.auction.service;
 
 import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.entity.Like;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Like;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import com.mini.auction.repository.LikeRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
