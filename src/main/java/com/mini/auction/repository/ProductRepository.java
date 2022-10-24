@@ -10,10 +10,6 @@ import java.util.List;
 
 //@Repository // 빈등록 안해도 되나? -kang
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
-    List<Product> findAllByOrderByModifiedAtDesc();
-
-
     List<Product> findByIsSoldFalseOrderByModifiedAtDesc();
 }
 
