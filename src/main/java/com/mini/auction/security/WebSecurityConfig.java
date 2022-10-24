@@ -28,7 +28,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final AuthenticationEntryPointException authenticationEntryPointException;
 
-    //password를 암호화 하지않으면 spring security가 접근을 허가하지 않는다.
+    //password 를 암호화 하지않으면 spring security 가 접근을 허가하지 않는다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -45,8 +45,9 @@ public class Bid extends BaseTimeEntity {
     }
 
     // 가격 업데이트
-    public void update(Integer biddingPrice) {
+    public void update(Integer biddingPrice, Member member) {
         this.biddingPrice = biddingPrice;
+        this.member = member;
     }
 //
 //    // 입찰에 참여한 사람 수
