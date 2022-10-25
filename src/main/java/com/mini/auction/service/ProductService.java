@@ -5,12 +5,16 @@ import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.domain.Comment;
 import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
-import com.mini.auction.exception.bidException.AlreadyStartBidException;
+import com.mini.auction.dto.response.ProductResponseDto;
+import com.mini.auction.exception.ErrorCode;
+import com.mini.auction.exception.GlobalException;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.util.Check;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,15 +38,27 @@ public class ProductService {
 
     private final MemberRepository memberRepository;
 
+    private final Check check;
+
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
-                                                ProductRequestPostDto productRequestPostDto) {
+                                      ProductRequestPostDto productRequestPostDto) {
         log.info("=====================");
         log.info("member.getUsername() = {}", member.getUsername());
         log.info("=====================");
+//        //가입한 회원인지 확인
+//        if(null == check.isPresentMember(member.getUsername())){
+//            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+//        }
         memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
         );
+        //제목 확인
+//        check.checkTitle(productRequestPostDto.getTitle());
+        //최저가 확인
+//        check.checkLowPrice(productRequestPostDto.getLowPrice());
+        //내용확인
+//        check.checkContent(productRequestPostDto.getContent());
 
         Product savedProduct = new Product(member, productRequestPostDto);
         productRepository.save(savedProduct);
@@ -79,12 +95,7 @@ public class ProductService {
 
     @Transactional
     public ResponseDto<String> deleteProduct(Long productId) {
-        Product findProduct = isExistedProduct(productId);
-        // 입찰에 참여한 사람이 있을 경우 예외 처리
-        if (findProduct.getHighPrice() != 0) {
-            throw new AlreadyStartBidException("입찰이 시작되었기 때문에 삭제할 수 없습니다.");
-        }
-        commentRepository.deleteAllByProduct(findProduct);
+        isExistedProduct(productId);
         productRepository.deleteById(productId);
 
         return ResponseDto.success("게시물 삭제가 완료되었습니다.");
@@ -122,7 +133,5 @@ public class ProductService {
         );
         return findProduct;
     }
-
-
 
 }
