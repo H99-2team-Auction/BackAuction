@@ -1,8 +1,8 @@
 package com.mini.auction.repository;
 
-import com.mini.auction.entity.Bid;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.Product;
+import com.mini.auction.domain.Bid;
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,4 +17,5 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     Optional<Bid> findBidByProduct(Product product);
 
     List<Bid> findBidsByProduct(Product product);
+
 }

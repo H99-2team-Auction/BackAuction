@@ -1,6 +1,6 @@
 package com.mini.auction.service;
 
-import com.mini.auction.entity.WinningBid;
+import com.mini.auction.domain.WinningBid;
 import com.mini.auction.repository.WinningBidRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

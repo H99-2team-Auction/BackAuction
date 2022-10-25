@@ -1,4 +1,4 @@
-package com.mini.auction.entity.base;
+package com.mini.auction.domain.base;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
