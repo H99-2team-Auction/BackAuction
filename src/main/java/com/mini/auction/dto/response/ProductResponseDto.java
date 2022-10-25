@@ -20,6 +20,7 @@ public class ProductResponseDto {
         private Long id;
         private String title;
         private Integer lowPrice;
+        private String path;
 //        private MultipartFile[] multipartFiles;
         private String username;
         private Integer highPrice;
@@ -40,6 +41,7 @@ public class ProductResponseDto {
             this.createdAt = savedProduct.getCreatedAt();
             this.modifiedAt = savedProduct.getModifiedAt();
             this.isSold = savedProduct.getIsSold();
+            this.path = savedProduct.getPath();
         }
     }
 

@@ -1,23 +1,22 @@
 package com.mini.auction.service;
 
-import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.domain.Comment;
 import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
-import com.mini.auction.dto.response.ProductResponseDto;
-import com.mini.auction.exception.ErrorCode;
-import com.mini.auction.exception.GlobalException;
+import com.mini.auction.dto.ResponseDto;
+import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
 import com.mini.auction.util.Check;
+import com.mini.auction.utils.AmazonS3ResourceStorage;
+import com.mini.auction.utils.MultipartUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,14 @@ public class ProductService {
     private final CommentRepository commentRepository;
 
     private final MemberRepository memberRepository;
+    private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     private final Check check;
 
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
-                                      ProductRequestPostDto productRequestPostDto) {
+                                                ProductRequestPostDto productRequestPostDto,
+                                                MultipartFile multipartFile) {
         log.info("=====================");
         log.info("member.getUsername() = {}", member.getUsername());
         log.info("=====================");
@@ -60,10 +61,23 @@ public class ProductService {
         //내용확인
 //        check.checkContent(productRequestPostDto.getContent());
 
-        Product savedProduct = new Product(member, productRequestPostDto);
+        String path = createPath(multipartFile);
+        log.info("path = {}", path);
+        log.info("=====================");
+        amazonS3ResourceStorage.store(path, multipartFile);
+
+        Product savedProduct = new Product(member, productRequestPostDto, path);
         productRepository.save(savedProduct);
 
         return new CommonProductResponseDto(savedProduct);
+    }
+
+    private String createPath(MultipartFile multipartFile) {
+        final String fileId = MultipartUtil.createFileId();
+        final String format = MultipartUtil.getFormat(multipartFile.getContentType());
+
+        return MultipartUtil.createPath(fileId, format);
+
     }
 
     /**

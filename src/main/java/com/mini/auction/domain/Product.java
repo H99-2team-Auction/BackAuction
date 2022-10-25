@@ -25,7 +25,7 @@ public class Product extends BaseTimeEntity {
     @JsonIgnore
     private Member member;
 
-//    private String igmage;
+    private String path;
 
     @Column
     private String title;
@@ -60,12 +60,13 @@ public class Product extends BaseTimeEntity {
     private Boolean isSold;
 
 
-    public Product(Member member, ProductRequestPostDto productRequestPostDto) {
+    public Product(Member member, ProductRequestPostDto productRequestPostDto, String path) {
         this.member = member;
         this.title = productRequestPostDto.getTitle();
         this.lowPrice = productRequestPostDto.getLowPrice();
         this.content = productRequestPostDto.getContent();
         this.isSold = false;
+        this.path = path;
         this.highPrice = 0;
         this.winner = null;
     }
