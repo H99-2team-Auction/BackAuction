@@ -5,7 +5,6 @@ import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
-import com.mini.auction.exception.WrongPriceException;
 import com.mini.auction.exception.bidException.AlreadySoldOutException;
 import com.mini.auction.exception.bidException.FailBidException;
 import com.mini.auction.repository.BidRepository;
@@ -70,15 +69,15 @@ public class BidService {
 
 
     private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
-        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
-            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-        }
+//        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
+//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+//        }
     }
 
     private void compareToHighprice(Product product, BidRequestDto bidRequestDto) {
-        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
-            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-        }
+//        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
+//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+//        }
     }
 
     private Product isExistedProduct(Long productId) {

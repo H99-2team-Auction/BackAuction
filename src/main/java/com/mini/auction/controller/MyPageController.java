@@ -1,5 +1,6 @@
 package com.mini.auction.controller;
 
+import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.ProductResponseDto.CommonProductResponseDto;
 import com.mini.auction.service.MyPageService;
 import com.mini.auction.security.user.UserDetailsImpl;
