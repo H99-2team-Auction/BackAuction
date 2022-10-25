@@ -14,7 +14,6 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
     List<Bid> findBidsByMember(Member member);
 
-    Optional<Bid> findBidByProduct(Product product);
 
     List<Bid> findBidsByProduct(Product product);
 

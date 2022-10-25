@@ -4,7 +4,6 @@ import com.mini.auction.dto.response.ProductResponseDto.CommonProductResponseDto
 import com.mini.auction.domain.*;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.LikeRepository;
-import com.mini.auction.repository.WinningBidRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -27,8 +27,13 @@ public class Product extends BaseTimeEntity {
 
 //    private String igmage;
 
+    @Column
     private String title;
+
+    @Column
     private Integer lowPrice;
+
+    @Column
     private String content;
 
     /*
@@ -58,6 +63,7 @@ public class Product extends BaseTimeEntity {
         this.lowPrice = productRequestPostDto.getLowPrice();
         this.content = productRequestPostDto.getContent();
         this.isSold = false;
+        this.highPrice = 0;
     }
 
     /**

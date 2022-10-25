@@ -6,9 +6,11 @@ import com.mini.auction.domain.Product;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
 import com.mini.auction.exception.WrongPriceException;
+import com.mini.auction.exception.bidException.FailBidException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +28,16 @@ public class BidService {
      * 상품 입찰
      */
     @Transactional
-    public BidResponseDto addBidder(Member member, Long productId, BidRequestDto bidRequestDto) {
+    public BidResponseDto addBid(Member member, Long productId, BidRequestDto bidRequestDto) {
         // 상품 존재 확인
         Product findProduct = isExistedProduct(productId);
         // 입찰한 사람이 있는지 확인
-        Bid bid = bidRepository.findBidByProduct(findProduct).orElse(null);
 
-        // 입찰이 처음인지 확인 (처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교)
-        if (bid == null) {
+
+        Bid bid;
+        // 입찰이 처음인지 확인 (Product 처음 post 할 때 highPrice 0으로 초기화)
+        // 처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교
+        if (findProduct.getHighPrice() == 0) {
             // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
             compareToLowprice(findProduct, bidRequestDto);
             // Bid 테이블에는 어떤 product 에 누가 입찰에 참여했는지만 알 수 있음
@@ -46,14 +50,15 @@ public class BidService {
             compareToHighprice(findProduct, bidRequestDto);
             // 최고 입찰가 product 에 update
             findProduct.updatePrice(bidRequestDto.getBiddingPrice());
-            bidRepository.save(new Bid(findProduct, member));
+            bid = new Bid(findProduct, member);
+            bidRepository.save(bid);
         }
 
         return new BidResponseDto(bid, getBidParticipants(findProduct));
     }
 
     // BidRepository 에서 Product 에 입찰한 멤버 모두 불러오는 메서드
-    private List<String> getBidParticipants(Product product) {
+    public List<String> getBidParticipants(Product product) {
         List<Bid> bidList = bidRepository.findBidsByProduct(product);
         List<String> usernameList = new ArrayList<>();
         for (Bid bid : bidList) {
@@ -83,4 +88,14 @@ public class BidService {
     }
 
 
+    public ResponseEntity<?> winBid(Long productId) {
+        // 상품 존재 확인
+        Product findProduct = isExistedProduct(productId);
+
+        if (bidRepository.findBidsByProduct(findProduct).size() == 0) {
+            productRepository.delete(findProduct);
+            throw new FailBidException("입찰에 참여한 분이 없습니다.");
+        }
+
+    }
 }

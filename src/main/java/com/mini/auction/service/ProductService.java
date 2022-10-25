@@ -5,6 +5,7 @@ import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.domain.Comment;
 import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
+import com.mini.auction.exception.bidException.AlreadyStartBidException;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -78,7 +79,12 @@ public class ProductService {
 
     @Transactional
     public ResponseDto<String> deleteProduct(Long productId) {
-        isExistedProduct(productId);
+        Product findProduct = isExistedProduct(productId);
+        // 입찰에 참여한 사람이 있을 경우 예외 처리
+        if (findProduct.getHighPrice() != 0) {
+            throw new AlreadyStartBidException("입찰이 시작되었기 때문에 삭제할 수 없습니다.");
+        }
+        commentRepository.deleteAllByProduct(findProduct);
         productRepository.deleteById(productId);
 
         return ResponseDto.success("게시물 삭제가 완료되었습니다.");

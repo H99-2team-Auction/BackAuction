@@ -13,14 +13,14 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Bid extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 //
 //    @Column
 //    private Integer biddingPrice;
-
-    @Column
-    private Integer participantCnt = 0;
+//
+//    @Column
+//    private Integer participantCnt = 0;
 
 
     @ManyToOne(fetch = LAZY)
@@ -30,12 +30,6 @@ public class Bid extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-
-    // 낙찰
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "WINNINGBID_ID")
-    private WinningBid winningBid;
-
 
 
     public Bid(Product product, Member member) {
