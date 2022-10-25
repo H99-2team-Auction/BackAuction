@@ -3,6 +3,7 @@ package com.mini.auction.controller;
 import com.mini.auction.domain.Member;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
+import com.mini.auction.dto.response.WinBidResponseDto;
 import com.mini.auction.service.BidService;
 import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +31,10 @@ public class BidController {
     }
 
 
-    @GetMapping("/winning-bid")
+    @PostMapping("/winning-bid")
     public ResponseEntity<?> winBid(@PathVariable Long productId) {
-        Member member = bidService.winBid(productId);
-        return new ResponseEntity<>(member, setHeaders(), HttpStatus.OK);
+        WinBidResponseDto responseDto = bidService.winBid(productId);
+        return new ResponseEntity<>(responseDto, setHeaders(), HttpStatus.OK);
     }
 
     public HttpHeaders setHeaders() {

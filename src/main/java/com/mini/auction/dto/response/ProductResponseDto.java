@@ -66,7 +66,6 @@ public class ProductResponseDto {
         public ProductDetailResponseDto(Product findProduct, List<CommentResponseDto> commentsResponseDto) {
             this.title = findProduct.getTitle();
             this.username = findProduct.getMember().getUsername();
-
             this.lowPrice = findProduct.getLowPrice();
             this.highPrice = findProduct.getHighPrice();
             this.content = findProduct.getContent();

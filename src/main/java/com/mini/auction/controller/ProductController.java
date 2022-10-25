@@ -62,8 +62,9 @@ public class ProductController {
      * 상품 상세 조회: 상품 상세 정보 And 해당 상품 댓글 전체 조회
      */
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductDetailResponseDto> getProduct(@PathVariable Long productId) {
-        return new ResponseEntity<>(productService.findOneProduct(productId), setHeaders(), HttpStatus.OK);
+    public ResponseEntity<?> getProduct(@PathVariable Long productId) {
+        ProductDetailResponseDto responseDto = productService.findOneProduct(productId);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -71,18 +72,19 @@ public class ProductController {
      */
     @DeleteMapping("/{productId}")
     public ResponseEntity<ResponseDto<String>> delProduct(@PathVariable Long productId) {
-        return new ResponseEntity<>(productService.deleteProduct(productId), setHeaders(), HttpStatus.OK);
+        String message = productService.deleteProduct(productId);
+        return new ResponseEntity<>(ResponseDto.success(message), setHeaders(), HttpStatus.OK);
     }
 
     /**
      * 상품 수정
      */
     @PatchMapping("/{productId}")
-    public ResponseEntity<CommonProductResponseDto> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<?> updateProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                   @PathVariable Long productId,
                                                                   @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
         CommonProductResponseDto responseDto = productService.modifyProduct(userDetails.getMember(), productId, productRequestPostDto);
-        return new ResponseEntity<>(responseDto, setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
 

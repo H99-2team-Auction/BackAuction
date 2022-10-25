@@ -5,8 +5,10 @@ import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
+import com.mini.auction.dto.response.WinBidResponseDto;
 import com.mini.auction.exception.bidException.AlreadySoldOutException;
 import com.mini.auction.exception.bidException.FailBidException;
+import com.mini.auction.exception.bidException.WrongPriceException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,15 +71,15 @@ public class BidService {
 
 
     private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
-//        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
-//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-//        }
+        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
+            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+        }
     }
 
     private void compareToHighprice(Product product, BidRequestDto bidRequestDto) {
-//        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
-//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-//        }
+        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
+            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+        }
     }
 
     private Product isExistedProduct(Long productId) {
@@ -88,7 +90,7 @@ public class BidService {
 
 
     @Transactional
-    public Member winBid(Long productId) {
+    public WinBidResponseDto winBid(Long productId) {
         // 상품 존재 확인
         Product findProduct = isExistedProduct(productId);
         // 입찰에 참여한 사람없으면 낙찰 안되고 게시물 삭제 후 예외처리
@@ -99,7 +101,7 @@ public class BidService {
         findProduct.soldProduct();
         // product 에 winner 저장
         findProduct.setWinner(bid);
-        return bid.getMember();
+        return new WinBidResponseDto(bid);
     }
 
     // 트랜젝셔널 때문에 낙찰되어도 삭제되는건가
