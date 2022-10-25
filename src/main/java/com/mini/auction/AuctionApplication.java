@@ -5,9 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableScheduling // 스프링에서 스케줄러 작동하도록 설정
+//@EnableScheduling // 스프링에서 스케줄러 작동하도록 설정
+//@EnableAsync // 동시에 여러 쓰레드로 실행되게 하도록 설정
 @EnableJpaAuditing
 @SpringBootApplication
 public class AuctionApplication {
