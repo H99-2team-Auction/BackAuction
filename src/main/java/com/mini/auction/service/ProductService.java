@@ -1,13 +1,14 @@
 package com.mini.auction.service;
 
-import com.mini.auction.dto.ResponseDto;
-import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.domain.Comment;
 import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
+import com.mini.auction.dto.ResponseDto;
+import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.util.Check;
 import com.mini.auction.utils.AmazonS3ResourceStorage;
 import com.mini.auction.utils.MultipartUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,15 +38,28 @@ public class ProductService {
     private final MemberRepository memberRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
+    private final Check check;
+
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
                                                 ProductRequestPostDto productRequestPostDto,
                                                 MultipartFile multipartFile) {
         log.info("=====================");
         log.info("member.getUsername() = {}", member.getUsername());
+        log.info("=====================");
+//        //가입한 회원인지 확인
+//        if(null == check.isPresentMember(member.getUsername())){
+//            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+//        }
         memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
         );
+        //제목 확인
+//        check.checkTitle(productRequestPostDto.getTitle());
+        //최저가 확인
+//        check.checkLowPrice(productRequestPostDto.getLowPrice());
+        //내용확인
+//        check.checkContent(productRequestPostDto.getContent());
 
         String path = createPath(multipartFile);
         log.info("path = {}", path);

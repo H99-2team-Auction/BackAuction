@@ -1,16 +1,22 @@
 package com.mini.auction.service;
 
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.RefreshToken;
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.request.LoginRequestDto;
 import com.mini.auction.dto.request.MemberRequestDto;
-import com.mini.auction.domain.Member;
-import com.mini.auction.domain.RefreshToken;
+import com.mini.auction.dto.response.MemberResponseDto;
+
+import com.mini.auction.exception.ErrorCode;
+import com.mini.auction.exception.GlobalException;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.RefreshTokenRepository;
 import com.mini.auction.security.jwt.JwtUtil;
 import com.mini.auction.security.jwt.TokenDto;
+import com.mini.auction.util.Check;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,38 +30,59 @@ import java.util.Optional;
 public class MemberService {
 
     private final JwtUtil jwtUtil;
+
+    private final Check check;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+
+    //회원가입
     @Transactional
-    public ResponseDto<?> signup(MemberRequestDto memberReqDto) {
+    public ResponseEntity<ResponseDto<MemberResponseDto>> signup(MemberRequestDto memberReqDto) {
 
         // username 중복 검사
         usernameDuplicateCheck(memberReqDto);
 
-        memberReqDto.setEncodePwd(passwordEncoder.encode(memberReqDto.getPassword()));
-        Member member = new Member(memberReqDto);
+        // 비빌번호 확인 & 비빌번호 불일치
+        if(!memberReqDto.getPassword().equals(memberReqDto.getPasswordConfirm())){
+            throw new GlobalException(ErrorCode.BAD_PASSWORD_CONFIRM);
+        }
 
+        Member member = Member.builder()
+                .username(memberReqDto.getUsername())
+                .password(passwordEncoder.encode(memberReqDto.getPassword()))
+                .build();
         memberRepository.save(member);
-        return ResponseDto.success("Success signup");
+        return ResponseEntity.ok().body(ResponseDto.success(
+                MemberResponseDto.builder()
+                        .username(member.getUsername())
+                        .createdAt(member.getCreatedAt())
+                        .modifiedAt(member.getModifiedAt())
+                        .build()
+        ));
     }
 
     public void usernameDuplicateCheck(MemberRequestDto memberReqDto) {
         if(memberRepository.findByUsername(memberReqDto.getUsername()).isPresent()){
-            throw new RuntimeException("Overlap Check"); // ex) return ResponseDto.fail()
+            throw new GlobalException(ErrorCode.DUPLICATE_MEMBER_ID);
+            // ex) return ResponseDto.fail()
         }
     }
 
+    //로그인
     @Transactional
-    public ResponseDto<?> login(LoginRequestDto loginReqDto, HttpServletResponse response) {
+    public ResponseEntity<ResponseDto<MemberResponseDto>> login(LoginRequestDto loginReqDto, HttpServletResponse response) {
 
-        Member member = memberRepository.findByUsername(loginReqDto.getUsername()).orElseThrow(
-                () -> new RuntimeException("Not found Member")
-        );
+        Member member = check.isPresentMember(loginReqDto.getUsername());
 
-        if(!passwordEncoder.matches(loginReqDto.getPassword(), member.getPassword())) {
-            throw new RuntimeException("Not matches Password");
+        //사용자가 있는지 확인
+        if(null == member){
+            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+        //비밀번호가 맞는지 확인
+        if(!member.validatePassword(passwordEncoder, loginReqDto.getPassword())){
+            throw new GlobalException(ErrorCode.BAD_PASSWORD);
         }
 
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUsername());
@@ -68,17 +95,21 @@ public class MemberService {
             RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginReqDto.getUsername());
             refreshTokenRepository.save(newToken);
         }
-
         setHeader(response, tokenDto);
 
-        return ResponseDto.success("Success Login");
-
+        return ResponseEntity.ok().body(ResponseDto.success(
+                MemberResponseDto.builder()
+                        .username(member.getUsername())
+                        .createdAt(member.getCreatedAt())
+                        .modifiedAt(member.getModifiedAt())
+                        .build()
+        ));
     }
+
 
     private void setHeader(HttpServletResponse response, TokenDto tokenDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
         
     }
-
 }

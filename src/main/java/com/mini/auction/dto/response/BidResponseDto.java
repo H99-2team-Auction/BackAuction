@@ -1,11 +1,15 @@
 package com.mini.auction.dto.response;
 
 import com.mini.auction.domain.Bid;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class BidResponseDto {
 
     private Integer biddingPrice;

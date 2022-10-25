@@ -1,8 +1,6 @@
 package com.mini.auction.security;
 
-import com.mini.auction.security.jwt.AuthenticationEntryPointException;
-import com.mini.auction.security.jwt.JwtAuthFilter;
-import com.mini.auction.security.jwt.JwtUtil;
+import com.mini.auction.security.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +28,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final AuthenticationEntryPointException authenticationEntryPointException;
 
-    //password 를 암호화 하지않으면 spring security 가 접근을 허가하지 않는다.
+    //password를 암호화 하지않으면 spring security가 접근을 허가하지 않는다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,29 +42,19 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-
-        configuration.setAllowedMethods(Arrays.asList("*"));
-
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-
-        configuration.setExposedHeaders(Arrays.asList("Access_Token", "Refresh_Token"));
-
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.cors().configurationSource(corsConfigurationSource());
+        http.cors().configurationSource(request -> {
+           var cors = new CorsConfiguration();
+           cors.setAllowedOriginPatterns(List.of("*"));
+           cors.setAllowedMethods(List.of("*"));
+           cors.setAllowedHeaders(List.of("*"));
+           cors.addExposedHeader("Access_Token");
+           cors.addExposedHeader("Refresh_Token");
+           cors.setAllowCredentials(true);
+           return cors;
+        });
+
         http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointException);
