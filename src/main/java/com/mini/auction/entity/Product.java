@@ -38,7 +38,6 @@ public class Product extends BaseTimeEntity {
         this.lowPrice = productRequestPostDto.getLowPrice();
         this.content = productRequestPostDto.getContent();
     }
-
     /**
      * 낙찰 시 soldProduct 메서드 호출
      */

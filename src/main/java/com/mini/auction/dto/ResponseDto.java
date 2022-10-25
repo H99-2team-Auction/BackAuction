@@ -1,6 +1,6 @@
 package com.mini.auction.dto;
 
-import com.mini.auction.entity.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,6 +12,7 @@ public class ResponseDto<T> {
     private Error error;
 
     public static <T> ResponseDto<T> success(T data) {
+
         return new ResponseDto<>(true, data, null);
     }
 }

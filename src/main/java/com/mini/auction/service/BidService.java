@@ -5,7 +5,7 @@ import com.mini.auction.dto.response.BidResponseDto;
 import com.mini.auction.entity.Bid;
 import com.mini.auction.entity.Member;
 import com.mini.auction.entity.Product;
-import com.mini.auction.exception.WrongPriceException;
+import com.mini.auction.entity.base.exception.WrongPriceException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,35 +29,35 @@ public class BidService {
     public BidResponseDto addBidder(Member member, Long productId, BidRequestDto bidRequestDto) {
         // 상품 존재 확인
         Product findProduct = isExistedProduct(productId);
-        // 입찰한 사람이 있는지 확인
-//        Bid bid = bidRepository.findBidByProduct(findProduct).orElse(null);
-//
-//        // 입찰이 처음인지 확인 (처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교)
-//        if (bid == null) {
-//            // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
-//            compareToLowprice(findProduct, bidRequestDto);
-//            // db 에 bid 저장
-//            // bid.addParticipant 에서 nullPointerException -> 초기화해줘서 해결
-//            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
-//            bidRepository.save(bid);
-//        } else {
-//            // 최고 입찰가보다 낮은 금액을 입력하면 예외처리
-//            compareToHighprice(bid, bidRequestDto);
-//            // 새 객체 저장
-//            bidRepository.save(new Bid(findProduct, member, bidRequestDto.getBiddingPrice()));
-//        }
-//        // bid null 일수도 있다고 인텔리제이에서 알려주는데 if문 지나면 null 아닌데 어떻게 풀어야하지????
-////        bid.addParticipant();
+//         입찰한 사람이 있는지 확인
+        Bid bid = bidRepository.findBidByProduct(findProduct).orElse(null);
+
+        // 입찰이 처음인지 확인 (처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교)
+        if (bid == null) {
+            // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
+            compareToLowprice(findProduct, bidRequestDto);
+            // db 에 bid 저장
+            // bid.addParticipant 에서 nullPointerException -> 초기화해줘서 해결
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bidRepository.save(bid);
+        } else {
+            // 최고 입찰가보다 낮은 금액을 입력하면 예외처리
+            compareToHighprice(bid, bidRequestDto);
+            // 새 객체 저장
+            bidRepository.save(new Bid(findProduct, member, bidRequestDto.getBiddingPrice()));
+        }
+        // bid null 일수도 있다고 인텔리제이에서 알려주는데 if문 지나면 null 아닌데 어떻게 풀어야하지????
+//        bid.addParticipant();
 
         if (bidRepository.findBidByProduct(findProduct).isEmpty()) {
             // bid 생성
-            Bid bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
             // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
             compareToLowprice(findProduct, bidRequestDto);
             // bid 저장
             bidRepository.save(bid);
         } else {
-            Bid bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
+            bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
             compareToHighprice(bid, bidRequestDto);
         }
 
@@ -96,6 +96,4 @@ public class BidService {
                 () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
         );
     }
-
-
 }

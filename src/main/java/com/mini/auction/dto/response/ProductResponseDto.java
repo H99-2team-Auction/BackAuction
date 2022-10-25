@@ -19,12 +19,10 @@ public class ProductResponseDto {
 
         private Long id;
 
-
         private String title;
         private Integer lowPrice;
 //        private MultipartFile[] multipartFiles;
 //        private String username;
-
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
