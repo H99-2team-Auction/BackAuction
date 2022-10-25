@@ -15,9 +15,9 @@ public class Bid extends BaseTimeEntity {
 
     @Id @GeneratedValue
     private Long id;
-
-    @Column
-    private Integer biddingPrice;
+//
+//    @Column
+//    private Integer biddingPrice;
 
     @Column
     private Integer participantCnt = 0;
@@ -38,17 +38,17 @@ public class Bid extends BaseTimeEntity {
 
 
 
-    public Bid(Product product, Member member, Integer biddingPrice) {
+    public Bid(Product product, Member member) {
         this.product = product;
         this.member = member;
-        this.biddingPrice = biddingPrice;
+//        this.biddingPrice = biddingPrice;
     }
-
-    // 가격 업데이트
-    public void update(Integer biddingPrice, Member member) {
-        this.biddingPrice = biddingPrice;
-        this.member = member;
-    }
+//
+//    // 가격 업데이트
+//    public void update(Integer biddingPrice, Member member) {
+//        this.biddingPrice = biddingPrice;
+//        this.member = member;
+//    }
 //
 //    // 입찰에 참여한 사람 수
 //    public void addParticipant() {
