@@ -5,6 +5,7 @@ import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.CommentResponseDto;
+import com.mini.auction.exception.bidException.AlreadyStartBidException;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -96,7 +97,7 @@ public class ProductService {
 
     public ProductDetailResponseDto findOneProduct(Long productId) {
         Product findProduct = isExistedProduct(productId);
-        List<Comment> comments = commentRepository.findAllByProduct(findProduct);
+        List<Comment> comments = commentRepository.findAllByProductId(productId);
         List<CommentResponseDto> commentsResponseDto = new ArrayList<>();
         for (Comment comment : comments) {
             commentsResponseDto.add(new CommentResponseDto(comment));
@@ -107,12 +108,19 @@ public class ProductService {
         return new ProductDetailResponseDto(findProduct, commentsResponseDto);
     }
 
+    /**
+     * 게시물 삭제
+     * @param productId
+     * @return
+     */
     @Transactional
-    public ResponseDto<String> deleteProduct(Long productId) {
-        isExistedProduct(productId);
-        productRepository.deleteById(productId);
-
-        return ResponseDto.success("게시물 삭제가 완료되었습니다.");
+    public String deleteProduct(Long productId) {
+        Product findProduct = isExistedProduct(productId);
+        // 입찰에 참여한 사람이 있을 경우 예외 처리
+        isStartBid(findProduct);
+        commentRepository.deleteAllByProductId(productId);
+        productRepository.delete(findProduct);
+        return "게시물이 삭제되었습니다.";
     }
 
     /**
@@ -126,13 +134,12 @@ public class ProductService {
                                                   ProductRequestPostDto productRequestPostDto) {
         // 상품 존재 유무 확인
         Product findProduct = isExistedProduct(productId);
-
-        String username = findProduct.getMember().getUsername();
-
         // 작성자 검증
-        if(!member.getUsername().equals(username)) {
-            throw new RuntimeException("작성자만 수정 또는 삭제할 수 있습니다.");
-        }
+        member.isAuthor(findProduct);
+        // 입찰에 참여한 사람이 있을 경우 예외 처리
+        isStartBid(findProduct);
+
+
         findProduct.updateProduct(productRequestPostDto);
 
         return new CommonProductResponseDto(findProduct);
@@ -142,10 +149,15 @@ public class ProductService {
      * Product 존재 유무 확인
      */
     private Product isExistedProduct(Long productId) {
-        Product findProduct = productRepository.findById(productId).orElseThrow(
+        return productRepository.findById(productId).orElseThrow(
                 () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
         );
-        return findProduct;
+    }
+
+    private void isStartBid(Product findProduct) {
+        if (findProduct.getHighPrice() != 0) {
+            throw new AlreadyStartBidException("입찰이 시작되었기 때문에 수정/삭제할 수 없습니다.");
+        }
     }
 
 }
