@@ -10,6 +10,7 @@ build/
 **/application-aws.yml
 **/application-security.yml
 
+
 ### STS ###
 .apt_generated
 .classpath

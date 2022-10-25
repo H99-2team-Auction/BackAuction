@@ -1,5 +1,6 @@
 package com.mini.auction.controller;
 
+import com.mini.auction.domain.Member;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
 import com.mini.auction.service.BidService;
@@ -10,26 +11,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/product/{productId}")
 public class BidController {
     private final BidService bidService;
 
-    @PostMapping("/product/{productId}/bid")
-    public ResponseEntity<?> bidding(@PathVariable Long productId,
-                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                     @RequestBody BidRequestDto bidRequestDto) {
-        BidResponseDto responseDto = bidService.addBidder(userDetails.getMember(), productId, bidRequestDto);
+    @PostMapping("/bid")
+    public ResponseEntity<?> addBid(@PathVariable Long productId,
+                                    @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                    @RequestBody BidRequestDto bidRequestDto) {
+        BidResponseDto responseDto = bidService.addBid(userDetails.getMember(), productId, bidRequestDto);
         return new ResponseEntity<>(responseDto, setHeaders(), HttpStatus.OK);
     }
 
+
+    @GetMapping("/winning-bid")
+    public ResponseEntity<?> winBid(@PathVariable Long productId) {
+        Member member = bidService.winBid(productId);
+        return new ResponseEntity<>(member, setHeaders(), HttpStatus.OK);
+    }
 
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
