@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class MultipartUtil {
 
-    private static final String BASE_DIR = "images";
+    private static final String BASE_DIR = "Pictures";
 
     /**
      * 로컬에서의 사용자 홈 디렉토리 경로를 반환합니다.
