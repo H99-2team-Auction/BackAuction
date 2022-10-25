@@ -1,5 +1,6 @@
 package com.mini.auction.controller;
 
+import com.mini.auction.domain.Member;
 import com.mini.auction.dto.request.BidRequestDto;
 import com.mini.auction.dto.response.BidResponseDto;
 import com.mini.auction.service.BidService;
@@ -29,9 +30,10 @@ public class BidController {
     }
 
 
-    @PostMapping("/winning-bid")
+    @GetMapping("/winning-bid")
     public ResponseEntity<?> winBid(@PathVariable Long productId) {
-        return bidService.winBid(productId);
+        Member member = bidService.winBid(productId);
+        return new ResponseEntity<>(member, setHeaders(), HttpStatus.OK);
     }
 
     public HttpHeaders setHeaders() {

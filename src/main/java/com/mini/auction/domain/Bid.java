@@ -15,13 +15,9 @@ public class Bid extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//
-//    @Column
-//    private Integer biddingPrice;
-//
-//    @Column
-//    private Integer participantCnt = 0;
 
+    @Column
+    private Integer highPrice;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "PRODUCT_ID")
@@ -32,10 +28,10 @@ public class Bid extends BaseTimeEntity {
     private Member member;
 
 
-    public Bid(Product product, Member member) {
+    public Bid(Product product, Member member, Integer highPrice) {
         this.product = product;
         this.member = member;
-//        this.biddingPrice = biddingPrice;
+        this.highPrice = highPrice;
     }
 //
 //    // 가격 업데이트

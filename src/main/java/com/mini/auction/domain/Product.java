@@ -36,6 +36,9 @@ public class Product extends BaseTimeEntity {
     @Column
     private String content;
 
+    @Column
+    private String winner;
+
     /*
     입찰 최고가를 어디에 저장해둘까 고민하다가 Product 엔티티에 저장하는게 best 일거라는 생각이 들었습니다.
     처음에 bid 라는 테이블에 한 product 의 입찰 내역을 member 별로 새로 생성하는게 아니라, 최고입찰가와 member 를
@@ -64,6 +67,7 @@ public class Product extends BaseTimeEntity {
         this.content = productRequestPostDto.getContent();
         this.isSold = false;
         this.highPrice = 0;
+        this.winner = null;
     }
 
     /**
@@ -72,6 +76,8 @@ public class Product extends BaseTimeEntity {
     public void soldProduct() {
         this.isSold = true;
     }
+
+    public void setWinner(Bid bid) {this.winner = bid.getMember().getUsername();}
 
 
     public void updateProduct(ProductRequestPostDto productRequestPostDto) {
