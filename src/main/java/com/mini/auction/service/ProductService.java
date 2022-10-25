@@ -8,11 +8,14 @@ import com.mini.auction.domain.Product;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.utils.AmazonS3ResourceStorage;
+import com.mini.auction.utils.MultipartUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +35,35 @@ public class ProductService {
     private final CommentRepository commentRepository;
 
     private final MemberRepository memberRepository;
+    private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
-                                                ProductRequestPostDto productRequestPostDto) {
+                                                ProductRequestPostDto productRequestPostDto,
+                                                MultipartFile multipartFile) {
         log.info("=====================");
         log.info("member.getUsername() = {}", member.getUsername());
-        log.info("=====================");
         memberRepository.findByUsername(member.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
         );
 
-        Product savedProduct = new Product(member, productRequestPostDto);
+        String path = createPath(multipartFile);
+        log.info("path = {}", path);
+        log.info("=====================");
+        amazonS3ResourceStorage.store(path, multipartFile);
+
+        Product savedProduct = new Product(member, productRequestPostDto, path);
         productRepository.save(savedProduct);
 
         return new CommonProductResponseDto(savedProduct);
+    }
+
+    private String createPath(MultipartFile multipartFile) {
+        final String fileId = MultipartUtil.createFileId();
+        final String format = MultipartUtil.getFormat(multipartFile.getContentType());
+
+        return MultipartUtil.createPath(fileId, format);
+
     }
 
     /**

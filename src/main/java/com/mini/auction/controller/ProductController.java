@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -37,8 +38,13 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                            @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), productRequestPostDto);
+                                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
+                                                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+        log.info("===================");
+        log.info(dto.getTitle());
+        log.info(multipartFile.getContentType());
+        log.info("===================");
+        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), dto, multipartFile);
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
