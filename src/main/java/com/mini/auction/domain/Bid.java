@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import static javax.persistence.FetchType.*;
 
@@ -38,7 +39,7 @@ public class Bid extends BaseTimeEntity {
 
 
 
-    public Bid(Product product, Member member) {
+    public Bid(Product product, Member member, @NotBlank(message = "입찰가를 입력해 주세요") Integer biddingPrice) {
         this.product = product;
         this.member = member;
 //        this.biddingPrice = biddingPrice;

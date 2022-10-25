@@ -36,10 +36,9 @@ public class ProductController {
      * 상품 등록
      */
     @PostMapping
-    public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public CommonProductResponseDto addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                             @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
-        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), productRequestPostDto);
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return productService.postProduct(userDetails.getMember(), productRequestPostDto);
     }
 
     /**

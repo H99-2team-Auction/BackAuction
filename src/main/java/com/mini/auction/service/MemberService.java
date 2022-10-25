@@ -1,17 +1,19 @@
 package com.mini.auction.service;
 
+import com.mini.auction.domain.Member;
+import com.mini.auction.domain.RefreshToken;
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.request.LoginRequestDto;
 import com.mini.auction.dto.request.MemberRequestDto;
 import com.mini.auction.dto.response.MemberResponseDto;
-import com.mini.auction.entity.Member;
-import com.mini.auction.entity.RefreshToken;
+
 import com.mini.auction.exception.ErrorCode;
 import com.mini.auction.exception.GlobalException;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.RefreshTokenRepository;
 import com.mini.auction.security.jwt.JwtUtil;
 import com.mini.auction.security.jwt.TokenDto;
+import com.mini.auction.util.Check;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,8 @@ import java.util.Optional;
 public class MemberService {
 
     private final JwtUtil jwtUtil;
+
+    private final Check check;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -66,12 +70,11 @@ public class MemberService {
         }
     }
 
-
     //로그인
     @Transactional
     public ResponseEntity<ResponseDto<MemberResponseDto>> login(LoginRequestDto loginReqDto, HttpServletResponse response) {
 
-        Member member = isPresentMember(loginReqDto.getUsername());
+        Member member = check.isPresentMember(loginReqDto.getUsername());
 
         //사용자가 있는지 확인
         if(null == member){
@@ -102,11 +105,7 @@ public class MemberService {
                         .build()
         ));
     }
-    //가입한 회원인지 아닌지 유효성 검사해주는 method
-    public Member isPresentMember(String username){
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        return optionalMember.orElse(null);
-    }
+
 
     private void setHeader(HttpServletResponse response, TokenDto tokenDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
