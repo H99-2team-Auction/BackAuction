@@ -90,9 +90,11 @@ public class BidService {
 
 
     @Transactional
-    public WinBidResponseDto winBid(Long productId) {
+    public WinBidResponseDto winBid(Long productId, Member member) {
         // 상품 존재 확인
         Product findProduct = isExistedProduct(productId);
+        // 상품을 등록한 사람이 아니면 낙찰 버튼 못누름
+        member.isAuthor(findProduct);
         // 입찰에 참여한 사람없으면 낙찰 안되고 게시물 삭제 후 예외처리
         checkSoldOrNot(findProduct);
         // bid repo 에서 Product 와 Product 에 저장된 highPrice 로 낙찰된 사람 찾기
@@ -104,7 +106,6 @@ public class BidService {
         return new WinBidResponseDto(bid);
     }
 
-    // 트랜젝셔널 때문에 낙찰되어도 삭제되는건가
     private void checkSoldOrNot(Product findProduct) {
         if (findProduct.getHighPrice() == 0) {
             productRepository.delete(findProduct);
