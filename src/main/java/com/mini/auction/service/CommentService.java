@@ -34,7 +34,7 @@ public class CommentService {
         // 해당 게시물 없으면 예외 터트림
         Product product = check.isExistedProduct(productId);
 
-        Comment comment = new Comment(requestDto.getComment(), member, product);
+        Comment comment = new Comment(requestDto.getComment(), member, productId);
 
         commentRepository.save(comment);
 
@@ -52,7 +52,7 @@ public class CommentService {
         // 해당 게시물 없으면 예외 터트림
         Product product = check.isExistedProduct(productId);
         // product 객체에 해당하는 댓글 리스트 불러오기
-        List<Comment> commentList = commentRepository.findAllByProduct(product);
+        List<Comment> commentList = commentRepository.findAllByProductId(productId);
 
         // comment 객체를 response 로 옮겨서 리턴
         List<CommentResponseDto> responseList = new ArrayList<>();

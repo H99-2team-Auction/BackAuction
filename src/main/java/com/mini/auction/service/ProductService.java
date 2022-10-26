@@ -7,6 +7,7 @@ import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.exception.ErrorCode;
 import com.mini.auction.exception.GlobalException;
+import com.mini.auction.exception.bidException.AlreadyStartBidException;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
@@ -40,6 +41,8 @@ public class ProductService {
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     private final Check check;
+    // 입찰 명단 조회 메서드(getParticipants) 호출하기 위해 의존성 주입
+    private final BidService bidService;
 
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
@@ -98,25 +101,35 @@ public class ProductService {
 
     public ProductDetailResponseDto findOneProduct(Long productId) {
         Product findProduct = check.isExistedProduct(productId);
-        List<Comment> comments = commentRepository.findAllByProduct(findProduct);
+        List<Comment> comments = commentRepository.findAllByProductId(productId);
         List<CommentResponseDto> commentsResponseDto = new ArrayList<>();
         for (Comment comment : comments) {
             commentsResponseDto.add(new CommentResponseDto(comment));
         }
+
+        List<String> participants = bidService.getBidParticipants(findProduct);
         /**
          * CommentResponseDto가 추가되면 List로 담아서 전달
          */
-        return new ProductDetailResponseDto(findProduct, commentsResponseDto);
+        return new ProductDetailResponseDto(findProduct, commentsResponseDto, participants);
     }
+
+    /**
+     * 게시물 삭제
+     * @param productId
+     * @return
+     */
 
     @Transactional
-    public ResponseDto<String> deleteProduct(Long productId) {
-        check.isExistedProduct(productId);
-        productRepository.deleteById(productId);
+    public String deleteProduct(Long productId) {
+        Product findProduct = check.isExistedProduct(productId);
+        // 입찰에 참여한 사람이 있을 경우 예외 처리
+        isStartBid(findProduct);
+        commentRepository.deleteAllByProductId(productId);
+        productRepository.delete(findProduct);
 
-        return ResponseDto.success("게시물 삭제가 완료되었습니다.");
+        return "게시물 삭제가 완료되었습니다.";
     }
-
     /**
      * 상품 수정
      *
@@ -138,5 +151,10 @@ public class ProductService {
         findProduct.updateProduct(productRequestPostDto);
 
         return new CommonProductResponseDto(findProduct);
+
+    }    private void isStartBid(Product findProduct) {
+        if (findProduct.getHighPrice() != 0) {
+            throw new AlreadyStartBidException("입찰이 시작되었기 때문에 수정/삭제할 수 없습니다.");
+        }
     }
 }
