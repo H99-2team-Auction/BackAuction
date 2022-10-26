@@ -1,4 +1,4 @@
-package com.mini.auction.exception.ProductExceptions;
+package com.mini.auction.exception.bidException.ProductExceptions;
 
 public class NotFoundProductException extends RuntimeException {
     public NotFoundProductException(String s) {
