@@ -59,6 +59,9 @@ public class WebSecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPointException);
 
+
+        http.formLogin().disable();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
