@@ -7,7 +7,6 @@ import com.mini.auction.dto.response.MemberResponseDto;
 import com.mini.auction.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,10 +37,11 @@ public class MemberController {
 
     //로그아웃
     // not yey
+
     @PostMapping
     public HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return headers;
     }
 }
