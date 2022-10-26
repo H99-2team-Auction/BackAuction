@@ -20,7 +20,6 @@ public class ProductResponseDto {
         private String title;
         private Integer lowPrice;
         private String path;
-//        private MultipartFile[] multipartFiles;
         private String username;
         private Integer highPrice;
 
@@ -51,8 +50,6 @@ public class ProductResponseDto {
         private String title;
         private Integer lowPrice;
         private Integer highPrice;
-
-        //        private MultipartFile[] multipartFiles;
         private String username;
         private String content;
         private Boolean isSold;

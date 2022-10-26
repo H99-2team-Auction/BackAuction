@@ -112,6 +112,11 @@ public class MemberService {
         
     }
 
+    /**
+     * 서버쪽에서는 토큰을 지워주는 것만 해주는게 맞는 것 같고
+     * 정상적인 응답을 받은 프론트에서 헤더를 지워주도록 하면 될 것 같습니다
+     * react: Storage.removeItem()
+     */
     public String logout(Member member) {
         refreshTokenRepository.deleteByMemberUsername(member.getUsername());
         return "로그아웃 완료";
