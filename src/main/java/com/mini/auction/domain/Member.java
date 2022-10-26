@@ -44,4 +44,10 @@ public class Member extends BaseTimeEntity {
             throw new NotAuthorException(this.username);
         }
     }
+
+    public void isAuthor(Product product) {
+        if (!this.username.equals(product.getMember().getUsername())) {
+            throw new NotAuthorException(this.username);
+        }
+    }
 }

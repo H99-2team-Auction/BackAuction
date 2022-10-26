@@ -2,7 +2,6 @@ package com.mini.auction.dto.response;
 
 import com.mini.auction.domain.Product;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -59,20 +58,23 @@ public class ProductResponseDto {
         private Boolean isSold;
 
         private List<CommentResponseDto> comments;
+        private List<String> participants;
 
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
-        public ProductDetailResponseDto(Product findProduct, List<CommentResponseDto> commentsResponseDto) {
+        public ProductDetailResponseDto(Product findProduct,
+                                        List<CommentResponseDto> commentsResponseDto,
+                                        List<String> participants) {
             this.title = findProduct.getTitle();
             this.username = findProduct.getMember().getUsername();
-
             this.lowPrice = findProduct.getLowPrice();
             this.highPrice = findProduct.getHighPrice();
             this.content = findProduct.getContent();
             this.isSold = findProduct.getIsSold();
             this.createdAt = findProduct.getCreatedAt();
             this.modifiedAt = findProduct.getModifiedAt();
+            this.participants = participants;
 
             this.comments = commentsResponseDto;
         }

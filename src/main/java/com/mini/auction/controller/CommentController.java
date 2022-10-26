@@ -9,15 +9,12 @@ import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
 import com.mini.auction.security.user.UserDetailsImpl;
 import com.mini.auction.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,6 +23,7 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final MemberController memberController;
 
     /**
      * 댓글 등록
@@ -37,7 +35,7 @@ public class CommentController {
             throws NotFoundProductException {
 
         CommentResponseDto responseDto = commentService.createComment(productId, requestDto, userDetails.getMember());
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -47,7 +45,7 @@ public class CommentController {
     public ResponseEntity<?> getCommentsList(@PathVariable Long productId)
             throws NotFoundProductException {
         List<CommentResponseDto> responseDtoList = commentService.getCommentsList(productId);
-        return new ResponseEntity<>(ResponseDto.success(responseDtoList), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDtoList), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -60,7 +58,7 @@ public class CommentController {
                                            @RequestBody CommentRequestDto requestDto) {
 
         CommentResponseDto responseDto = commentService.updateComment(productId, commentId, userDetails.getMember(), requestDto);
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -72,16 +70,8 @@ public class CommentController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws NotFoundCommentException, NotFoundProductException {
         CommentResponseDto responseDto = commentService.deleteComment(productId, commentId, userDetails.getMember());
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
 
 
-    /**
-     * 헤더 객체 생성 후 데이터 반환 형식 json 으로 설정
-     */
-    public HttpHeaders setHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        return headers;
-    }
 }
