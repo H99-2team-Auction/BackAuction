@@ -37,11 +37,8 @@ public class BidService {
         // 낙찰된 상품인지 확인
         if (findProduct.getIsSold()) throw new AlreadySoldOutException("이미 낙찰된 상품입니다.");
 
-        Bid bid = null;
+        Bid bid;
 
-        /**
-         * compareToLowprice 와 compareToHighprice가 주석되어 있는데 문제가 없나요
-         */
         // 입찰이 처음인지 확인 (Product 처음 post 할 때 highPrice 0으로 초기화)
         // 처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교
         if (findProduct.getHighPrice() == 0) {
