@@ -59,7 +59,7 @@ public class MyPageService {
      * @return
      */
     public List<CommonProductResponseDto> getLikeList(Member member) {
-        List<Like> likeList = likeRepository.findLikesByMember(member);
+        List<Like> likeList = likeRepository.findAllByMember(member);
         List<CommonProductResponseDto> responseDtoList = new ArrayList<>();
         for (Like like : likeList) {
             responseDtoList.add(new CommonProductResponseDto(like.getProduct()));

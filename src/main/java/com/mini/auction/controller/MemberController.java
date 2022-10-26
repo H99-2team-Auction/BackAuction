@@ -38,7 +38,7 @@ public class MemberController {
         return memberService.login(loginRequestDto, httpServletResponse);
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String message = memberService.logout(userDetails.getMember());
         return new ResponseEntity<>(ResponseDto.success(message), setHeaders(), HttpStatus.OK);

@@ -9,6 +9,7 @@ import com.mini.auction.exception.ErrorCode;
 import com.mini.auction.exception.GlobalException;
 import com.mini.auction.exception.bidException.AlreadyStartBidException;
 import com.mini.auction.repository.CommentRepository;
+import com.mini.auction.repository.LikeRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
 import com.mini.auction.utils.Check;
@@ -38,6 +39,7 @@ public class ProductService {
     private final CommentRepository commentRepository;
 
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
+    private final LikeRepository likeRepository;
 
     private final Check check;
     // 입찰 명단 조회 메서드(getParticipants) 호출하기 위해 의존성 주입
@@ -121,6 +123,7 @@ public class ProductService {
         Product findProduct = check.isExistedProduct(productId);
         // 입찰에 참여한 사람이 있을 경우 예외 처리
         isStartBid(findProduct);
+        likeRepository.deleteAllByProduct(findProduct);
         commentRepository.deleteAllByProductId(productId);
         productRepository.delete(findProduct);
 
