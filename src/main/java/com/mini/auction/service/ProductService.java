@@ -5,16 +5,17 @@ import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
 import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.response.CommentResponseDto;
+import com.mini.auction.exception.ErrorCode;
+import com.mini.auction.exception.GlobalException;
 import com.mini.auction.exception.bidException.AlreadyStartBidException;
 import com.mini.auction.repository.CommentRepository;
 import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.ProductRepository;
-import com.mini.auction.util.Check;
+import com.mini.auction.utils.Check;
 import com.mini.auction.utils.AmazonS3ResourceStorage;
 import com.mini.auction.utils.MultipartUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,14 +36,13 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final CommentRepository commentRepository;
+
     private final MemberRepository memberRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     private final Check check;
-
     // 입찰 명단 조회 메서드(getParticipants) 호출하기 위해 의존성 주입
     private final BidService bidService;
-
 
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
@@ -51,19 +51,20 @@ public class ProductService {
         log.info("=====================");
         log.info("member.getUsername() = {}", member.getUsername());
         log.info("=====================");
-//        //가입한 회원인지 확인
-//        if(null == check.isPresentMember(member.getUsername())){
-//            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
-//        }
-        memberRepository.findByUsername(member.getUsername()).orElseThrow(
-                () -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
-        );
-        //제목 확인
-//        check.checkTitle(productRequestPostDto.getTitle());
-        //최저가 확인
-//        check.checkLowPrice(productRequestPostDto.getLowPrice());
-        //내용확인
-//        check.checkContent(productRequestPostDto.getContent());
+        //가입한 회원인지 확인
+        if(null == check.isPresentMember(member.getUsername())){
+            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+        //memberRepository.findByUsername(member.getUsername()).orElseThrow(
+        //() -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
+        //);
+
+        //제목 작성 확인
+        check.checkTitle(productRequestPostDto.getTitle());
+        //최저가 작성 확인
+        check.checkLowPrice(productRequestPostDto.getLowPrice());
+        //내용 작성 확인
+        check.checkContent(productRequestPostDto.getContent());
 
         String path = createPath(multipartFile);
         log.info("path = {}", path);
@@ -91,6 +92,7 @@ public class ProductService {
     public List<CommonProductResponseDto> findAllProducts() {
         List<Product> findProducts = productRepository.findByIsSoldFalseOrderByModifiedAtDesc();
         List<CommonProductResponseDto> productsResponseDto = new ArrayList<>();
+
         for (Product findProduct : findProducts) {
             productsResponseDto.add(new CommonProductResponseDto(findProduct));
         }
@@ -98,14 +100,17 @@ public class ProductService {
     }
 
     public ProductDetailResponseDto findOneProduct(Long productId) {
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         List<Comment> comments = commentRepository.findAllByProductId(productId);
         List<CommentResponseDto> commentsResponseDto = new ArrayList<>();
         for (Comment comment : comments) {
             commentsResponseDto.add(new CommentResponseDto(comment));
         }
-        List<String> participants = bidService.getBidParticipants(findProduct);
 
+        List<String> participants = bidService.getBidParticipants(findProduct);
+        /**
+         * CommentResponseDto가 추가되면 List로 담아서 전달
+         */
         return new ProductDetailResponseDto(findProduct, commentsResponseDto, participants);
     }
 
@@ -114,16 +119,17 @@ public class ProductService {
      * @param productId
      * @return
      */
+
     @Transactional
     public String deleteProduct(Long productId) {
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         // 입찰에 참여한 사람이 있을 경우 예외 처리
         isStartBid(findProduct);
         commentRepository.deleteAllByProductId(productId);
         productRepository.delete(findProduct);
-        return "게시물이 삭제되었습니다.";
-    }
 
+        return "게시물 삭제가 완료되었습니다.";
+    }
     /**
      * 상품 수정
      *
@@ -134,31 +140,21 @@ public class ProductService {
                                                   Long productId,
                                                   ProductRequestPostDto productRequestPostDto) {
         // 상품 존재 유무 확인
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
+
+        String username = findProduct.getMember().getUsername();
+
         // 작성자 검증
-        member.isAuthor(findProduct);
-        // 입찰에 참여한 사람이 있을 경우 예외 처리
-        isStartBid(findProduct);
-
-
+        if(!member.getUsername().equals(username)) {
+            throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
+        }
         findProduct.updateProduct(productRequestPostDto);
 
         return new CommonProductResponseDto(findProduct);
-    }
 
-    /**
-     * Product 존재 유무 확인
-     */
-    private Product isExistedProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow(
-                () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
-        );
-    }
-
-    private void isStartBid(Product findProduct) {
+    }    private void isStartBid(Product findProduct) {
         if (findProduct.getHighPrice() != 0) {
             throw new AlreadyStartBidException("입찰이 시작되었기 때문에 수정/삭제할 수 없습니다.");
         }
     }
-
 }

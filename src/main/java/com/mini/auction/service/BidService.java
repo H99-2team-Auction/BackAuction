@@ -8,9 +8,9 @@ import com.mini.auction.dto.response.BidResponseDto;
 import com.mini.auction.dto.response.WinBidResponseDto;
 import com.mini.auction.exception.bidException.AlreadySoldOutException;
 import com.mini.auction.exception.bidException.FailBidException;
-import com.mini.auction.exception.bidException.WrongPriceException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.utils.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +25,14 @@ public class BidService {
     private final ProductRepository productRepository;
     private final BidRepository bidRepository;
 
+    private final Check check;
     /**
      * 상품 입찰
      */
     @Transactional
     public BidResponseDto addBid(Member member, Long productId, BidRequestDto bidRequestDto) {
         // 상품 존재 확인
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         // 낙찰된 상품인지 확인
         if (findProduct.getIsSold()) throw new AlreadySoldOutException("이미 낙찰된 상품입니다.");
 
@@ -71,28 +72,22 @@ public class BidService {
 
 
     private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
-        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
-            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-        }
+//        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
+//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+//        }
     }
 
     private void compareToHighprice(Product product, BidRequestDto bidRequestDto) {
-        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
-            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
-        }
-    }
-
-    private Product isExistedProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow(
-                () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
-        );
+//        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
+//            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
+//        }
     }
 
 
     @Transactional
     public WinBidResponseDto winBid(Long productId, Member member) {
         // 상품 존재 확인
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         // 상품을 등록한 사람이 아니면 낙찰 버튼 못누름
         member.isAuthor(findProduct);
         // 입찰에 참여한 사람없으면 낙찰 안되고 게시물 삭제 후 예외처리
@@ -106,12 +101,11 @@ public class BidService {
         return new WinBidResponseDto(bid);
     }
 
+    // 트랜젝셔널 때문에 낙찰되어도 삭제되는건가
     private void checkSoldOrNot(Product findProduct) {
         if (findProduct.getHighPrice() == 0) {
             productRepository.delete(findProduct);
             throw new FailBidException("입찰에 참여한 분이 없습니다.");
         }
     }
-
-
 }
