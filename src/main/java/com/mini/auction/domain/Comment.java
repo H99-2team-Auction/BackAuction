@@ -21,18 +21,18 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(nullable = false)
+    private Long productId;
+    // Product > product
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public Comment(String comment, Member member, Long product) {
+    public Comment(String comment, Member member, Long productId) {
         this.comment = comment;
         this.member = member;
-        this.product = product;
+        this.productId = productId;
     }
 
     public void update(CommentRequestDto requestDto) {

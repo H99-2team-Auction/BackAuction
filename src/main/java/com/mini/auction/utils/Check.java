@@ -3,7 +3,6 @@ package com.mini.auction.utils;
 import com.mini.auction.domain.Comment;
 import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
-import com.mini.auction.exception.CommentExceptions.NotAuthorException;
 import com.mini.auction.exception.ErrorCode;
 import com.mini.auction.exception.GlobalException;
 import com.mini.auction.repository.CommentRepository;
@@ -54,9 +53,11 @@ public class Check {
     }
     /**
      * Product 존재 유무 확인
+     *
+     * @return
      */
-    public void isExistedProduct(Long productId) {
-        productRepository.findById(productId).orElseThrow(
+    public Product isExistedProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(
                 () -> new GlobalException(ErrorCode.PRODUCT_NOT_FOUND)
         );
     }
