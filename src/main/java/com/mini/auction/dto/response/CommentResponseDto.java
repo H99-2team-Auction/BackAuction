@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentResponseDto {
 
+    private Long id;
+
     private String comment;
 
     private String username;
@@ -23,6 +25,7 @@ public class CommentResponseDto {
     private LocalDateTime modifiedAt;
 
     public CommentResponseDto(Comment comment) {
+        this.id = comment.getId();
         this.comment = comment.getComment();
         this.username = comment.getMember().getUsername();
         this.createdAt = comment.getCreatedAt();
