@@ -1,6 +1,11 @@
 package com.mini.auction.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mini.auction.dto.ResponseDto;
+import com.mini.auction.dto.request.ProductRequestDto;
 import com.mini.auction.service.ProductService;
 import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +43,16 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
-                                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+//                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
+                                                                            @RequestParam("dto") String dto,
+                                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+        ProductRequestPostDto readDto = objectMapper.readValue(dto, new TypeReference<>() {});
         log.info("===================");
-        log.info(dto.getTitle());
+        log.info(readDto.toString());
         log.info(multipartFile.getContentType());
         log.info("===================");
-        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), dto, multipartFile);
+        CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), readDto, multipartFile);
         return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
     }
 
