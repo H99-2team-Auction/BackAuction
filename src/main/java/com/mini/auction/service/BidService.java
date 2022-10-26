@@ -36,25 +36,31 @@ public class BidService {
         // 낙찰된 상품인지 확인
         if (findProduct.getIsSold()) throw new AlreadySoldOutException("이미 낙찰된 상품입니다.");
 
-        Bid bid;
+        Bid bid = null;
+
+        /**
+         * compareToLowprice 와 compareToHighprice가 주석되어 있는데 문제가 없나요
+         */
         // 입찰이 처음인지 확인 (Product 처음 post 할 때 highPrice 0으로 초기화)
         // 처음이면 최저입찰가와 비교, 처음 아니면 최고입찰가와 비교
         if (findProduct.getHighPrice() == 0) {
             // 최저 입찰가보다 낮은 금액을 입력하면 예외처리
-            compareToLowprice(findProduct, bidRequestDto);
+            compareToLowPrice(findProduct, bidRequestDto);
             // Bid 테이블에는 어떤 product 에 누가 입찰에 참여했는지만 알 수 있음
             bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
             // 입찰에 참여한 사람의 입찰가를 product 에 update 하는 방식으로 진행
             findProduct.updatePrice(bidRequestDto.getBiddingPrice());
-            bidRepository.save(bid);
         } else {
             // 최고 입찰가보다 낮은 금액을 입력하면 예외처리
-            compareToHighprice(findProduct, bidRequestDto);
+            compareToHighPrice(findProduct, bidRequestDto);
             // 최고 입찰가 product 에 update
             findProduct.updatePrice(bidRequestDto.getBiddingPrice());
             bid = new Bid(findProduct, member, bidRequestDto.getBiddingPrice());
-            bidRepository.save(bid);
         }
+        /**
+         * 공통되는 부분 밖으로 뺌
+          */
+        bidRepository.save(bid);
 
         return new BidResponseDto(bid, getBidParticipants(findProduct));
     }
@@ -71,13 +77,13 @@ public class BidService {
     }
 
 
-    private void compareToLowprice(Product product, BidRequestDto bidRequestDto) {
+    private void compareToLowPrice(Product product, BidRequestDto bidRequestDto) {
 //        if (product.getLowPrice() >= bidRequestDto.getBiddingPrice()) {
 //            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
 //        }
     }
 
-    private void compareToHighprice(Product product, BidRequestDto bidRequestDto) {
+    private void compareToHighPrice(Product product, BidRequestDto bidRequestDto) {
 //        if (product.getHighPrice() >= bidRequestDto.getBiddingPrice()) {
 //            throw new WrongPriceException("현재 입찰가보다 높은 가격을 입력하세요.");
 //        }

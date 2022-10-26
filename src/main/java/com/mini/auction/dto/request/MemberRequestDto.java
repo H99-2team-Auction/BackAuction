@@ -24,8 +24,4 @@ public class MemberRequestDto {
 
     @NotBlank
     private String passwordConfirm;
-
-    public void setEncodePwd(String encodePwd) {
-        this.password = encodePwd;
-    }
 }

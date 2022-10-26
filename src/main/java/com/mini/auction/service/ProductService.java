@@ -84,6 +84,7 @@ public class ProductService {
     /**
      * 상품 전체 검색
      * 입찰자 수, 수정일자 내림차순
+     * >> 입찰자 수로 검색하려면 입찰자 수에 대한 필드가 상품에 추가되어야 할 듯
      */
     public List<CommonProductResponseDto> findAllProducts() {
         List<Product> findProducts = productRepository.findByIsSoldFalseOrderByModifiedAtDesc();
@@ -115,7 +116,6 @@ public class ProductService {
      * @param productId
      * @return
      */
-
     @Transactional
     public String deleteProduct(Long productId) {
         Product findProduct = check.isExistedProduct(productId);
@@ -126,10 +126,9 @@ public class ProductService {
 
         return "게시물 삭제가 완료되었습니다.";
     }
+
     /**
      * 상품 수정
-     *
-     * @return
      */
     @Transactional
     public CommonProductResponseDto modifyProduct(Member member,
@@ -144,6 +143,10 @@ public class ProductService {
         if(!member.getUsername().equals(username)) {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
         }
+        /**
+         * 입찰이 시작되면 작성자도 수정 불가능한지
+         * 만약 그렇다면 isStartBid가 상품 존재 유무 확인 아래로 이동해야하는 것이 조금 더 좋을듯합니다
+         */
         // 입찰 시작되면 수정 불가
         isStartBid(findProduct);
 

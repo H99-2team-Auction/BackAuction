@@ -41,8 +41,8 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-//                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
-                                                                            @RequestParam("dto") String dto,
+//                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto, // needed application/json
+                                                                            @RequestParam("dto") String dto,                // not needed application/json
                                                             @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
         ProductRequestPostDto readDto = objectMapper.readValue(dto, new TypeReference<>() {});
