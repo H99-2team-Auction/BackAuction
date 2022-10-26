@@ -42,14 +42,22 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
 //                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto, // needed application/json
-                                                                            @RequestParam("dto") String dto,                // not needed application/json
+//                                                            @RequestParam("dto") String dto,                // not needed application/json
+                                                            @RequestParam String title,
+                                                            @RequestParam String content,
+                                                            @RequestParam Integer lowPrice,
                                                             @RequestPart(value = "file", required = false) MultipartFile multipartFile) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
-        ProductRequestPostDto readDto = objectMapper.readValue(dto, new TypeReference<>() {});
         log.info("===================");
-        log.info(readDto.toString());
+        log.info("title = {}", title);
+        log.info("content = {}", content);
+        log.info("lowPrice = {}", lowPrice);
         log.info(multipartFile.getContentType());
         log.info("===================");
+
+        ProductRequestPostDto readDto = new ProductRequestPostDto(title, lowPrice, content);
+
+//        ObjectMapper objectMapper = new ObjectMapper().registerModule(new SimpleModule());
+//        ProductRequestPostDto readDto = objectMapper.readValue(dto, new TypeReference<>() {});
         CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), readDto, multipartFile);
         return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
