@@ -10,9 +10,7 @@ import com.mini.auction.service.ProductService;
 import com.mini.auction.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static com.mini.auction.dto.request.ProductRequestDto.*;
@@ -37,6 +34,7 @@ import static com.mini.auction.dto.response.ProductResponseDto.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final MemberController memberController;
 
     /**
      * 상품 등록
@@ -53,7 +51,7 @@ public class ProductController {
         log.info(multipartFile.getContentType());
         log.info("===================");
         CommonProductResponseDto responseDto = productService.postProduct(userDetails.getMember(), readDto, multipartFile);
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -63,7 +61,7 @@ public class ProductController {
     public ResponseEntity<ResponseDto<List<CommonProductResponseDto>>> getProducts() {
         List<CommonProductResponseDto> products = productService.findAllProducts();
 
-        return new ResponseEntity<>(ResponseDto.success(products), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(products), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -72,7 +70,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable Long productId) {
         ProductDetailResponseDto responseDto = productService.findOneProduct(productId);
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -81,7 +79,7 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     public ResponseEntity<ResponseDto<String>> delProduct(@PathVariable Long productId) {
         String message = productService.deleteProduct(productId);
-        return new ResponseEntity<>(ResponseDto.success(message), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(message), memberController.setHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -92,16 +90,7 @@ public class ProductController {
                                                                   @PathVariable Long productId,
                                                                   @RequestBody @Valid ProductRequestPostDto productRequestPostDto) {
         CommonProductResponseDto responseDto = productService.modifyProduct(userDetails.getMember(), productId, productRequestPostDto);
-        return new ResponseEntity<>(ResponseDto.success(responseDto), setHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(responseDto), memberController.setHeaders(), HttpStatus.OK);
     }
-
-
-    public HttpHeaders setHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        return headers;
-    }
-
-
 }
 

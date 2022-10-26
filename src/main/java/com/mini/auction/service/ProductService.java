@@ -35,11 +35,14 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final CommentRepository commentRepository;
-
     private final MemberRepository memberRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     private final Check check;
+
+    // 입찰 명단 조회 메서드(getParticipants) 호출하기 위해 의존성 주입
+    private final BidService bidService;
+
 
     @Transactional
     public CommonProductResponseDto postProduct(Member member,
@@ -88,7 +91,6 @@ public class ProductService {
     public List<CommonProductResponseDto> findAllProducts() {
         List<Product> findProducts = productRepository.findByIsSoldFalseOrderByModifiedAtDesc();
         List<CommonProductResponseDto> productsResponseDto = new ArrayList<>();
-
         for (Product findProduct : findProducts) {
             productsResponseDto.add(new CommonProductResponseDto(findProduct));
         }
@@ -102,10 +104,9 @@ public class ProductService {
         for (Comment comment : comments) {
             commentsResponseDto.add(new CommentResponseDto(comment));
         }
-        /**
-         * CommentResponseDto가 추가되면 List로 담아서 전달
-         */
-        return new ProductDetailResponseDto(findProduct, commentsResponseDto);
+        List<String> participants = bidService.getBidParticipants(findProduct);
+
+        return new ProductDetailResponseDto(findProduct, commentsResponseDto, participants);
     }
 
     /**
