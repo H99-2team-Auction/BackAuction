@@ -55,11 +55,10 @@ public class Check {
     /**
      * Product 존재 유무 확인
      */
-    public Product isExistedProduct(Long productId) {
-        Product findProduct = productRepository.findById(productId).orElseThrow(
+    public void isExistedProduct(Long productId) {
+        productRepository.findById(productId).orElseThrow(
                 () -> new GlobalException(ErrorCode.PRODUCT_NOT_FOUND)
         );
-        return findProduct;
     }
     /*
     * Comment 존재 유무 확인

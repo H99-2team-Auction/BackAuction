@@ -111,4 +111,9 @@ public class MemberService {
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
         
     }
+
+    public String logout(Member member) {
+        refreshTokenRepository.deleteByMemberUsername(member.getUsername());
+        return "로그아웃 완료";
+    }
 }

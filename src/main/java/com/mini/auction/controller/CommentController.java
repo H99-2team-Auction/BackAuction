@@ -5,7 +5,7 @@ import com.mini.auction.dto.ResponseDto;
 import com.mini.auction.dto.request.CommentRequestDto;
 import com.mini.auction.dto.response.CommentResponseDto;
 import com.mini.auction.exception.CommentExceptions.NotFoundCommentException;
-import com.mini.auction.exception.ProductExceptions.NotFoundProductException;
+import com.mini.auction.exception.bidException.ProductExceptions.NotFoundProductException;
 import com.mini.auction.security.user.UserDetailsImpl;
 import com.mini.auction.service.CommentService;
 import lombok.RequiredArgsConstructor;

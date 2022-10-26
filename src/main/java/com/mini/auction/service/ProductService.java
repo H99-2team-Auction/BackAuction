@@ -37,7 +37,6 @@ public class ProductService {
 
     private final CommentRepository commentRepository;
 
-    private final MemberRepository memberRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     private final Check check;
@@ -55,9 +54,6 @@ public class ProductService {
         if(null == check.isPresentMember(member.getUsername())){
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
-        //memberRepository.findByUsername(member.getUsername()).orElseThrow(
-        //() -> new UsernameNotFoundException("Member 정보를 찾을 수 없습니다.")
-        //);
 
         //제목 작성 확인
         check.checkTitle(productRequestPostDto.getTitle());
@@ -148,11 +144,16 @@ public class ProductService {
         if(!member.getUsername().equals(username)) {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
         }
+        // 입찰 시작되면 수정 불가
+        isStartBid(findProduct);
+
         findProduct.updateProduct(productRequestPostDto);
 
         return new CommonProductResponseDto(findProduct);
 
-    }    private void isStartBid(Product findProduct) {
+    }
+
+    private void isStartBid(Product findProduct) {
         if (findProduct.getHighPrice() != 0) {
             throw new AlreadyStartBidException("입찰이 시작되었기 때문에 수정/삭제할 수 없습니다.");
         }
