@@ -38,8 +38,8 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<ResponseDto<CommonProductResponseDto>> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
-                                                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+                                                            @RequestPart(value = "dto") @Valid ProductRequestPostDto dto,
+                                                            @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
         log.info("===================");
         log.info(dto.getTitle());
         log.info(multipartFile.getContentType());

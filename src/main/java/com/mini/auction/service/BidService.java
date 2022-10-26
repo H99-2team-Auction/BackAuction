@@ -9,6 +9,7 @@ import com.mini.auction.exception.bidException.AlreadySoldOutException;
 import com.mini.auction.exception.bidException.FailBidException;
 import com.mini.auction.repository.BidRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.utils.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +24,14 @@ public class BidService {
     private final ProductRepository productRepository;
     private final BidRepository bidRepository;
 
+    private final Check check;
     /**
      * 상품 입찰
      */
     @Transactional
     public BidResponseDto addBid(Member member, Long productId, BidRequestDto bidRequestDto) {
         // 상품 존재 확인
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         // 낙찰된 상품인지 확인
         if (findProduct.getIsSold()) throw new AlreadySoldOutException("이미 낙찰된 상품입니다.");
 
@@ -80,17 +82,11 @@ public class BidService {
 //        }
     }
 
-    private Product isExistedProduct(Long productId) {
-        return productRepository.findById(productId).orElseThrow(
-                () -> new RuntimeException("해당 상품은 존재하지 않습니다.")
-        );
-    }
-
 
     @Transactional
     public Member winBid(Long productId) {
         // 상품 존재 확인
-        Product findProduct = isExistedProduct(productId);
+        Product findProduct = check.isExistedProduct(productId);
         // 입찰에 참여한 사람없으면 낙찰 안되고 게시물 삭제 후 예외처리
         checkSoldOrNot(findProduct);
         // bid repo 에서 Product 와 Product 에 저장된 highPrice 로 낙찰된 사람 찾기
@@ -109,6 +105,4 @@ public class BidService {
             throw new FailBidException("입찰에 참여한 분이 없습니다.");
         }
     }
-
-
 }

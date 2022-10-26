@@ -6,6 +6,7 @@ import com.mini.auction.domain.Member;
 import com.mini.auction.domain.Product;
 import com.mini.auction.repository.LikeRepository;
 import com.mini.auction.repository.ProductRepository;
+import com.mini.auction.utils.Check;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,12 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
     private final ProductRepository productRepository;
+    private final Check check;
 
 
     public ResponseDto<String> likeProduct(Member member, Long productId) {
-        Product findProduct = productRepository.findById(productId).orElseThrow(
-                () -> new RuntimeException("해당 게시물이 존재하지 않습니다.")
-        );
+        //상품 존재 유무 확인
+        Product findProduct = check.isExistedProduct(productId);
 
         Optional<Like> liked = likeRepository.findAllByProductAndMember(findProduct, member);
 

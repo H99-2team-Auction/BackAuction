@@ -13,7 +13,7 @@ import com.mini.auction.repository.MemberRepository;
 import com.mini.auction.repository.RefreshTokenRepository;
 import com.mini.auction.security.jwt.JwtUtil;
 import com.mini.auction.security.jwt.TokenDto;
-import com.mini.auction.util.Check;
+import com.mini.auction.utils.Check;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -105,7 +105,6 @@ public class MemberService {
                         .build()
         ));
     }
-
 
     private void setHeader(HttpServletResponse response, TokenDto tokenDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
