@@ -17,7 +17,6 @@ import java.util.Optional;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final ProductRepository productRepository;
     private final Check check;
 
 
