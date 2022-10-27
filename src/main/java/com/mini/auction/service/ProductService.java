@@ -53,7 +53,7 @@ public class ProductService {
         log.info("member.getUsername() = {}", member.getUsername());
         log.info("=====================");
         //가입한 회원인지 확인
-        if(null == check.isPresentMember(member.getUsername())){
+        if (null == check.isPresentMember(member.getUsername())) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
@@ -107,14 +107,14 @@ public class ProductService {
         }
 
         List<String> participants = bidService.getBidParticipants(findProduct);
-        /**
-         * CommentResponseDto가 추가되면 List로 담아서 전달
-         */
-        return new ProductDetailResponseDto(findProduct, commentsResponseDto, participants);
+        Integer likeCnt = likeRepository.findLikesByProduct(findProduct).size();
+
+        return new ProductDetailResponseDto(findProduct, commentsResponseDto, participants, likeCnt);
     }
 
     /**
      * 게시물 삭제
+     *
      * @param productId
      * @return
      */
@@ -143,7 +143,7 @@ public class ProductService {
         String username = findProduct.getMember().getUsername();
 
         // 작성자 검증
-        if(!member.getUsername().equals(username)) {
+        if (!member.getUsername().equals(username)) {
             throw new GlobalException(ErrorCode.UNAUTHORIZED_USER);
         }
         /**

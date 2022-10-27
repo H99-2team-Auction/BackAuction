@@ -53,7 +53,7 @@ public class ProductResponseDto {
         private String username;
         private String content;
         private Boolean isSold;
-
+        private Integer likeCnt;
         private List<CommentResponseDto> comments;
         private List<String> participants;
 
@@ -62,12 +62,13 @@ public class ProductResponseDto {
 
         public ProductDetailResponseDto(Product findProduct,
                                         List<CommentResponseDto> commentsResponseDto,
-                                        List<String> participants) {
+                                        List<String> participants, Integer likeCnt) {
             this.title = findProduct.getTitle();
             this.username = findProduct.getMember().getUsername();
             this.lowPrice = findProduct.getLowPrice();
             this.highPrice = findProduct.getHighPrice();
             this.content = findProduct.getContent();
+            this.likeCnt = likeCnt;
             this.isSold = findProduct.getIsSold();
             this.createdAt = findProduct.getCreatedAt();
             this.modifiedAt = findProduct.getModifiedAt();
