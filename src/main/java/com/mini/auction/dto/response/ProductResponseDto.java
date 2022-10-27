@@ -53,6 +53,8 @@ public class ProductResponseDto {
         private String username;
         private String content;
         private Boolean isSold;
+        private String path;
+
         private Integer likeCnt;
         private List<CommentResponseDto> comments;
         private List<String> participants;
@@ -74,6 +76,7 @@ public class ProductResponseDto {
             this.modifiedAt = findProduct.getModifiedAt();
             this.participants = participants;
 
+            this.path = findProduct.getPath();
             this.comments = commentsResponseDto;
         }
     }
