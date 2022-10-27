@@ -66,8 +66,8 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers("/signup").permitAll()
-                .antMatchers( "/login").permitAll()
-                .antMatchers("/logout").permitAll()
+                .antMatchers( "/api/login").permitAll()
+                .antMatchers("/api/logout").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/product/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/product/{productId}/comment/**").permitAll()
