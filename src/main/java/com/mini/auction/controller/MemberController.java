@@ -33,12 +33,12 @@ public class MemberController {
     }
 
     //로그인
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public ResponseEntity<ResponseDto<MemberResponseDto>> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
         return memberService.login(loginRequestDto, httpServletResponse);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     public ResponseEntity<?> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String message = memberService.logout(userDetails.getMember());
         return new ResponseEntity<>(ResponseDto.success(message), HttpStatus.OK);
