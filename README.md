@@ -94,6 +94,7 @@ https://live-everyday.tistory.com/188
 
 처음보는 에러에 당황해서 하루종일 해결을 못했던것 같습니다. 해결하고 나니 Access_Token 언더바 syntax error 였습니다. 
 처음보는 에러나 오랫동안 해결이 안되는 에러는 생각보다 간단한 에러일수도 있다는 생각을 했고, 다음부터는 기본적인 에러부터 찾아봐야겠다고 생각했습니다. 
+
 ![InvalidDefinition](https://user-images.githubusercontent.com/66250121/198214292-c5138b81-dae4-47a5-a20b-049aebc09b47.png)
 
 
